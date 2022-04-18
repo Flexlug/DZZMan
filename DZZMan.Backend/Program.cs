@@ -18,6 +18,10 @@ var vars = new Dictionary<string, string?>
     { "DB_NAME", Environment.GetEnvironmentVariable("DB_NAME") }
 };
 
+Console.WriteLine("envs");
+foreach (var var in vars)
+    Console.WriteLine($"{var.Key} - {var.Value}");
+
 if (vars.Any(x => string.IsNullOrEmpty(x.Value)))
     throw new NullReferenceException("Not all environment variables defined");
 
