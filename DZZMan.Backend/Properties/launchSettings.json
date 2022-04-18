@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:14276",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "DZZMan.Backend": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_IP": "192.168.2.39",
+        "DB_NAME": "DZZMan.DB",
+        "DB_PORT": "8080"
+      },
+      "applicationUrl": "http://localhost:5061",
+      "dotnetRunMessages": true
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_IP": "192.168.2.39",
+        "DB_NAME": "DZZMan.DB",
+        "DB_PORT": "8080"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": false,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "DB_IP": "192.168.2.39",
+        "DB_NAME": "DZZMan.DB",
+        "DB_PORT": "8080"
+      },
+      "publishAllPorts": true
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5061/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_IP": "192.168.2.39",
+        "DB_NAME": "DZZMan.DB",
+        "DB_PORT": "8080",
+        "ASPNETCORE_URLS": "http://localhost:5061"
+      },
+      "distributionName": ""
+    }
+  }
+}
