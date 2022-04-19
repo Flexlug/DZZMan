@@ -17,16 +17,15 @@ namespace DZZMan.Backend.Database.Providers
 
         public async Task<bool> ValidateTokenAsync(string token)
         {
-            using (IAsyncDocumentSession session = _store.OpenAsyncSession(
-                new Raven.Client.Documents.Session.SessionOptions() { NoTracking = true }))
+            using (IAsyncDocumentSession session = _store.OpenAsyncSession())
             {
-                var tokenCollection = session
+                var tokenCollection = await session
                     .Query<TokenCollection>()
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
                 if (tokenCollection is null)
                 {
-                    tokenCollection = new();
+                    tokenCollection = new() { Tokens = new List<string>() { $"{GetHashCode()}-{DateTime.Now.Ticks}" } };
                     await session.StoreAsync(tokenCollection);
                     await session.SaveChangesAsync();
 

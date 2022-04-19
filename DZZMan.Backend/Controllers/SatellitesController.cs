@@ -8,7 +8,7 @@ using Microsoft.Extensions.Primitives;
 namespace DZZMan.Backend.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     public class SatellitesController : ControllerBase
     {
         private readonly ILogger<SatellitesController> _logger;
@@ -25,17 +25,15 @@ namespace DZZMan.Backend.Controllers
             _tokenProvider = tokenProvider;
         }
 
-        [HttpGet(Name = "GetAllSatellites")]
+        [HttpGet(template: "GetAll", Name = "GetAllSatellites")]
         public async Task<ActionResult> GetAllAsync()
         {
             var res = await _satelliteProvider.GetSatellitesAsync();
-            if (res is null || res.Count == 0)
-                return NotFound();
 
             return new JsonResult(res);
         }
 
-        [HttpGet(Name = "GetSatellite")]
+        [HttpGet(template: "Get", Name = "GetSatellite")]
         public async Task<ActionResult> GetAsync([FromQuery] string name)
         {
             var res = await _satelliteProvider.GetSatelliteAsync(name);
@@ -48,7 +46,7 @@ namespace DZZMan.Backend.Controllers
 
 
 
-        [HttpPut(Name = "AddSatellite")]
+        [HttpPut(template: "Add", Name = "AddSatellite")]
         public async Task<IActionResult> PutAsync(
             [FromBody] Satellite satellite)
         {
@@ -62,7 +60,7 @@ namespace DZZMan.Backend.Controllers
             return Ok();
         }
 
-        [HttpPost(Name = "UpdateSatellite")]
+        [HttpPost(template: "Update", Name = "UpdateSatellite")]
         public async Task<ActionResult> UpdateAsync(
             [FromBody] Satellite satellite)
         {
@@ -76,7 +74,7 @@ namespace DZZMan.Backend.Controllers
             return Ok();
         }
 
-        [HttpDelete(Name = "DeleteSatellite")]
+        [HttpDelete(template: "Delete", Name = "DeleteSatellite")]
         public async Task<ActionResult> DeleteAsync(
             [FromQuery] string name)
         {
@@ -90,11 +88,20 @@ namespace DZZMan.Backend.Controllers
             return Ok();
         }
 
+        [HttpPost(template: "ValidateToken", Name = "ValidateToken")]
+        public async Task<ActionResult> ValidateTokenAsync()
+        {
+            if (!await ValidateAuth(Request))
+                return Unauthorized();
+
+            return Ok();
+        }
+
         private async Task<bool> ValidateAuth(HttpRequest request)
         {
             KeyValuePair<string, StringValues> dummyKeyValue = new();
             var header = request.Headers.FirstOrDefault(x => x.Key == "DZZ-Auth", dummyKeyValue);
-            
+
             if (header.Equals(dummyKeyValue))
                 return false;
 

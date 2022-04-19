@@ -1,0 +1,65 @@
+﻿<Window x:Class="DZZMan.SGPNET_Test.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DZZMan.SGPNET_Test"
+        mc:Ignorable="d"
+        Title="TLE retriever" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="60"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0"
+               Grid.Column="0" 
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Content="Satellite SDC"/>
+
+        <TextBox x:Name="SDCTB"
+                 Grid.Row="0"
+                 Grid.Column="1"
+                 Margin="5"/>
+
+        <Button x:Name="OKButton"
+                Grid.Row="0"
+                Grid.Column="2"
+                Margin="5"
+                Content="OK" Click="OKButton_Click"/>
+
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               Content="TLE"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
+
+        <TextBox x:Name="TLETB"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 Grid.ColumnSpan="2"
+                 Margin="5"/>
+
+        <Label Content="Параметры орбиты"
+               Grid.Row="2"
+               Grid.ColumnSpan="3"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Left"/>
+
+        <ListBox x:Name="OrbitParamsList"
+                 Grid.Row="3"
+                 Grid.ColumnSpan="3"
+                 Margin="5"/>
+    </Grid>
+</Window>

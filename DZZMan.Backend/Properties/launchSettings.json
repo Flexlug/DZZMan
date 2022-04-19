@@ -35,7 +35,7 @@
     },
     "Docker": {
       "commandName": "Docker",
-      "launchBrowser": false,
+      "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
         "DB_IP": "192.168.2.39",

@@ -1,38 +1,36 @@
 ﻿
 namespace DZZMan.Models
 {
-    public class Satellite
+    public partial class Satellite
     {
         /// <summary>
-        /// ID спутника
+        /// Наименование спутника
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Тип аэрофотосъемочной аппаратуры спутника
+        /// Cospar ID
         /// </summary>
-        public SatelliteType Type { get; set; }
+        public string CosparId { get; set; }
 
         /// <summary>
-        /// Угол зрения для кадровый систем (в градусах) и ширина полосы съемки для сканерных систем (в км)
+        /// Номер спутника по каталогу NORAD
         /// </summary>
-        public double FOV { get; set; }
-
+        public string SCN { get; set; }
 
         /// <summary>
         /// Тип аэрофотосъемочной аппаратуры спутника
         /// </summary>
-        public enum SatelliteType
-        {
-            /// <summary>
-            /// Сканерная
-            /// </summary>
-            Scanner,
+        public SensorType SensorType { get; set; }
 
-            /// <summary>
-            /// Кадровая
-            /// </summary>
-            Photo
-        }
+        /// <summary>
+        /// Ширина полосы сканирования на Земле в км
+        /// </summary>
+        public double Swath { get; set; }
+
+        /// <summary>
+        /// Сердняя высота спутника
+        /// </summary>
+        public double Height { get; set; }
     }
 }

@@ -11,28 +11,9 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .CreateLogger();
 
-var vars = new Dictionary<string, string?>
-{
-    { "DB_IP", Environment.GetEnvironmentVariable("DB_IP") },
-    { "DB_PORT", Environment.GetEnvironmentVariable("DB_PORT") },
-    { "DB_NAME", Environment.GetEnvironmentVariable("DB_NAME") }
-};
-
-Console.WriteLine("envs");
-foreach (var var in vars)
-    Console.WriteLine($"{var.Key} - {var.Value}");
-
-if (vars.Any(x => string.IsNullOrEmpty(x.Value)))
-    throw new NullReferenceException("Not all environment variables defined");
-
-var settings = new Settings()
-{
-    DbIp = vars["DB_IP"],
-    DbPort = vars["DB_PORT"],
-    DbName = vars["DB_NAME"],
-};
-
 var builder = WebApplication.CreateBuilder(args);
+
+var settings = builder.Configuration.GetSection("Database").Get<Settings>();
 
 builder.Logging.AddSerilog(dispose: true);
 

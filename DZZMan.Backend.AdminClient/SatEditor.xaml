@@ -1,0 +1,98 @@
+﻿<Window x:Class="DZZMan.Backend.AdminClient.SatEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DZZMan.Backend.AdminClient"
+        mc:Ignorable="d"
+        Title="Satellite attributes edit" Height="300" Width="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="200" Width="3*"/>
+            <ColumnDefinition MinWidth="300" Width="7*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0"
+               Grid.Row="0"
+               Content="Name"
+               VerticalAlignment="Center"/>
+
+        <TextBox x:Name="NameTB"
+                 Grid.Row="0"
+                 Grid.Column="1"
+                 Margin="5"/>
+
+        <Label Grid.Column="0"
+               Grid.Row="1"
+               Content="COSPAR ID"
+               VerticalAlignment="Center"/>
+
+        <TextBox x:Name="CosparIDTB"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="5"/>
+
+        <Label Grid.Column="0"
+               Grid.Row="2"
+               Content="SCN"
+               VerticalAlignment="Center"/>
+
+        <TextBox x:Name="SCNTB"
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 Margin="5"/>
+
+        <Label Grid.Column="0"
+               Grid.Row="3"
+               Content="Scanner type"
+               VerticalAlignment="Center"/>
+
+        <ComboBox x:Name="SensorType"
+                  Grid.Row="3"
+                  Grid.Column="1"
+                  Margin="5">
+            <ComboBoxItem Content="Линейный"/>
+            <ComboBoxItem Content="Кадровый"/>
+        </ComboBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="4"
+               Content="Swath"
+               VerticalAlignment="Center"/>
+
+        <TextBox Grid.Row="4"
+                 Grid.Column="1"
+                 x:Name="SwathTB"
+                 Margin="5"/>
+
+        <Label Grid.Column="0"
+               Grid.Row="5"
+               Content="Height"
+               VerticalAlignment="Center"/>
+
+        <TextBox x:Name="HeightTB"
+                 Grid.Row="5"
+                 Grid.Column="1"
+                 Margin="5"/>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="7"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right">
+            <Button Content="Отмена" Width="100" Margin="5" Click="CancelButton_Click"/>
+            <Button Content="OK" Width="100" Margin="5" Click="OKButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
