@@ -1,4 +1,6 @@
 ﻿
+using DZZMan.Models.Sensors;
+
 namespace DZZMan.Models
 {
     public partial class Satellite
@@ -19,14 +21,9 @@ namespace DZZMan.Models
         public string SCN { get; set; }
 
         /// <summary>
-        /// Тип аэрофотосъемочной аппаратуры спутника
+        /// Информация о сенсоре спутника
         /// </summary>
-        public SensorType SensorType { get; set; }
-
-        /// <summary>
-        /// Ширина полосы сканирования на Земле в км
-        /// </summary>
-        public double Swath { get; set; }
+        public Sensor Sensor { get; set; }
 
         /// <summary>
         /// Сердняя высота спутника

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ApiLogger">
+      <HintPath>..\..\SatImageRetriever\CopernicusApi\bin\Debug\net6.0\ApiLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="CopernicusAPI">
+      <HintPath>..\..\SatImageRetriever\CopernicusApi\bin\Debug\net6.0\CopernicusAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Downloader">
+      <HintPath>..\..\SatImageRetriever\CopernicusApi\bin\Debug\net6.0\Downloader.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

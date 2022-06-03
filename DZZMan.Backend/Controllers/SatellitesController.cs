@@ -44,8 +44,6 @@ namespace DZZMan.Backend.Controllers
             return new JsonResult(res);
         }
 
-
-
         [HttpPut(template: "Add", Name = "AddSatellite")]
         public async Task<IActionResult> PutAsync(
             [FromBody] Satellite satellite)

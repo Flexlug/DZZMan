@@ -14,6 +14,6 @@ namespace DZZMan.Models
         /// <summary>
         /// Кадровая
         /// </summary>
-        Photo
+        Frame
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.1.32407.343
+VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.Backend", "DZZMan.Backend\DZZMan.Backend.csproj", "{BC1EC8FF-4A8D-4584-8330-FE0623A5A442}"
 EndProject
@@ -11,13 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.API", "DZZMan.API\DZ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.Backend.AdminClient", "DZZMan.Backend.AdminClient\DZZMan.Backend.AdminClient.csproj", "{59616AAC-07B2-4D4E-A226-724F173062B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan", "DZZMan\DZZMan.csproj", "{2FDA8291-C7D7-46B1-B68D-EF703176B34A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.Celestrak", "DZZMan.Celestrak\DZZMan.Celestrak.csproj", "{8F6BEA69-F657-4F17-95AB-2F99E0BDC240}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.SGPTest", "DZZMan.SGPTest\DZZMan.SGPTest.csproj", "{CCC889A6-EB52-4BE2-AE43-7D00E727028E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DZZMan.SGPNET-Test", "DZZMan.SGPNET-Test\DZZMan.SGPNET-Test.csproj", "{44BEC5BB-302C-4284-B169-72F8ECEC874B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.SGPNET-Test", "DZZMan.SGPNET-Test\DZZMan.SGPNET-Test.csproj", "{44BEC5BB-302C-4284-B169-72F8ECEC874B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.SatImageRetriever", "DZZMan.SatImageRetriever\DZZMan.SatImageRetriever.csproj", "{90B806F1-892A-4BDE-A2FE-0C41427B079B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DZZMan", "DZZMan\DZZMan.csproj", "{8FD0B910-1398-4C33-A745-29EEE7AE232F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +43,6 @@ Global
 		{59616AAC-07B2-4D4E-A226-724F173062B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59616AAC-07B2-4D4E-A226-724F173062B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59616AAC-07B2-4D4E-A226-724F173062B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FDA8291-C7D7-46B1-B68D-EF703176B34A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FDA8291-C7D7-46B1-B68D-EF703176B34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FDA8291-C7D7-46B1-B68D-EF703176B34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FDA8291-C7D7-46B1-B68D-EF703176B34A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F6BEA69-F657-4F17-95AB-2F99E0BDC240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F6BEA69-F657-4F17-95AB-2F99E0BDC240}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F6BEA69-F657-4F17-95AB-2F99E0BDC240}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +55,14 @@ Global
 		{44BEC5BB-302C-4284-B169-72F8ECEC874B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44BEC5BB-302C-4284-B169-72F8ECEC874B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44BEC5BB-302C-4284-B169-72F8ECEC874B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90B806F1-892A-4BDE-A2FE-0C41427B079B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90B806F1-892A-4BDE-A2FE-0C41427B079B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90B806F1-892A-4BDE-A2FE-0C41427B079B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90B806F1-892A-4BDE-A2FE-0C41427B079B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FD0B910-1398-4C33-A745-29EEE7AE232F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FD0B910-1398-4C33-A745-29EEE7AE232F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FD0B910-1398-4C33-A745-29EEE7AE232F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FD0B910-1398-4C33-A745-29EEE7AE232F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,34 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DZZMan.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonia="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="DZZMan.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="DZZMan">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="3*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Menu Grid.Row="0">
+			<MenuItem x:Name="LoadTLE" Header="Загрузить TLE" Command="{Binding OpenTLEManager}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+			<MenuItem x:Name="CalculateSpace" Header="Рассчитать область"/>
+			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки"/>
+		</Menu>
+		
+		<avalonia:MapControl x:Name="MapControl" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+		
+		<ListBox x:Name="SatelliteList" Grid.Row="2"/>
+	</Grid>
+
+</Window>

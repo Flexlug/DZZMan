@@ -1,7 +1,7 @@
-﻿<Application x:Class="DZZMan.App"
+﻿<Application x:Class="DZZMan.SatImageRetriever.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:DZZMan"
+             xmlns:local="clr-namespace:DZZMan.SatImageRetriever"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

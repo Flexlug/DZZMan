@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DZZMan.Utils
+namespace DZZMan.Models.MainWindow
 {
-    public class OrbitTraceProvider
+    public class MainWindowModel
     {
-        //public List<>
+
     }
 }
