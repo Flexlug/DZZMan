@@ -1,11 +1,13 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
 using DZZMan.ViewModels;
+using ReactiveUI;
 
 namespace DZZMan.Views
 {
-    public partial class TLEManager : Window
+    public partial class TLEManager : ReactiveWindow<TLEManagerViewModel>
     {
         public TLEManager()
         {

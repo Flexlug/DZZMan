@@ -10,12 +10,15 @@ namespace DZZMan.Models.TLEManager
 {
     internal class TLEManagerModel
     {
-        private ObservableCollection<TLEWrapper> tles = new();
+        /// <summary>
+        /// Доступные TLE
+        /// </summary>
         public ReadOnlyObservableCollection<TLEWrapper> AvailableTLEs { get; set; }
+        private ObservableCollection<TLEWrapper> _tles = new();
 
         public TLEManagerModel()
         {
-            AvailableTLEs = new(tles);
+            AvailableTLEs = new(_tles);
         }
 
         public void GetCelestrakTLEs()
@@ -33,7 +36,7 @@ namespace DZZMan.Models.TLEManager
 
             foreach (var tle in newTles.Values)
             {
-                tles.Add(new TLEWrapper
+                _tles.Add(new TLEWrapper
                 {
                     IsChecked = false,
                     TLE = tle

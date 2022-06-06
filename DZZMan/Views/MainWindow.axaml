@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:DZZMan.ViewModels"
+		xmlns:model="using:DZZMan.ViewModels.Models"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalonia="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
@@ -9,26 +10,38 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="DZZMan">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="30"/>
+			<RowDefinition Height="40"/>
 			<RowDefinition Height="3*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<Menu Grid.Row="0">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="6*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<MenuItem x:Name="LoadTLE" Header="Загрузить TLE" Command="{Binding OpenTLEManager}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
 			<MenuItem x:Name="CalculateSpace" Header="Рассчитать область"/>
 			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки"/>
 		</Menu>
 		
-		<avalonia:MapControl x:Name="MapControl" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-		
-		<ListBox x:Name="SatelliteList" Grid.Row="2"/>
+		<avalonia:MapControl x:Name="MapControl" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+		<DataGrid x:Name="SatelliteList" Items="{Binding SateliteLayers}" SelectedItem="{Binding SelectedLayer}" Grid.Row="1" Grid.Column="1">
+			<DataGrid.Columns>
+				<DataGridTemplateColumn Header="*" SortMemberPath="IsChecked">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate DataType="model:SateliteLayer">
+							<CheckBox IsChecked="{Binding Enabled}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+			</DataGrid.Columns>
+		</DataGrid>
 	</Grid>
 
 </Window>

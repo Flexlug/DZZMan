@@ -15,8 +15,19 @@ var sat = new Satellite(tle);
 
 var sgp4 = new Sgp4(tle);
 
+var periodMinites = sgp4.Orbit.Period;
+var d = periodMinites / 200;
+
+var periodInSpan = TimeSpan.FromMinutes(periodMinites);
+
 var cords = new List<GeodeticCoordinate>();
-for (int i = 0; i < 1000000; i += 100)
+for (double i = 0; i < periodMinites * 2; i += d)
     cords.Add(sgp4.FindPosition(i).ToGeodetic());
+
+var sr = new StreamWriter("cords.txt");
+foreach (var c in cords)
+    sr.WriteLine($"{c.Latitude} - {c.Longitude} - {c.Altitude}");
+sr.Flush();
+sr.Dispose();
 
 Console.ReadKey();
