@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DZZMan.Models.Sensors;
 
 namespace DZZMan.Backend.AdminClient
 {
@@ -35,8 +36,8 @@ namespace DZZMan.Backend.AdminClient
             NameTB.Text = satellite.Name;
             CosparIDTB.Text = satellite.CosparId;
             SCNTB.Text = satellite.SCN;
-            SensorType.SelectedIndex = (int)satellite.SensorType;
-            SwathTB.Text = satellite.Swath.ToString();
+            SensorType.SelectedIndex = (int)satellite.Sensor.SensorType;
+            //SwathTB.Text = satellite.Swath.ToString();
             HeightTB.Text = satellite.Height.ToString();
         }
 
@@ -64,10 +65,30 @@ namespace DZZMan.Backend.AdminClient
                 MessageBox.Show("Значение Swath не является дробным числом", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
+            
             if (Satellite is not null)
             {
-                if ((int)Satellite.SensorType != SensorType.SelectedIndex ||
+                bool equals = (int)Satellite.Sensor.SensorType == SensorType.SelectedIndex;
+                
+                if (equals)
+                {
+                    switch (Satellite.Sensor.SensorType)
+                    {
+                        case Models.SensorType.Scanner:
+                            Scanner scanner = Satellite.Sensor as Scanner;
+                            if (scanner.Swath != swath)
+                                
+                            break;
+                        
+                        case Models.SensorType.Frame:
+                            
+                            break;
+                    }
+                }
+                
+                
+                
+                if ((int)Satellite.Sensor.SensorType != SensorType.SelectedIndex ||
                     Satellite.Name != NameTB.Text ||
                     Satellite.Swath != swath ||
                     Satellite.Height != height ||

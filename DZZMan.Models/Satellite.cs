@@ -3,7 +3,7 @@ using DZZMan.Models.Sensors;
 
 namespace DZZMan.Models
 {
-    public partial class Satellite
+    public class Satellite
     {
         /// <summary>
         /// Наименование спутника

@@ -28,7 +28,7 @@ namespace DZZMan.Backend.Controllers
         [HttpGet(template: "GetAll", Name = "GetAllSatellites")]
         public async Task<ActionResult> GetAllAsync()
         {
-            var res = await _satelliteProvider.GetSatellitesAsync();
+            var res = await _satelliteProvider.GetSatellitesCosparIdsAsync();
 
             return new JsonResult(res);
         }

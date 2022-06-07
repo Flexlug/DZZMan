@@ -11,7 +11,7 @@ namespace DZZMan.Models.TLEManager
     /// <summary>
     /// Обертка поверх TLE для окна TLEManager
     /// </summary>
-    public class TLEWrapper
+    public class SateliteWrapper
     {
         /// <summary>
         /// Отметка о выборе пользователя

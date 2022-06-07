@@ -22,7 +22,11 @@ namespace DZZMan.API
             _hasToken = false;
         }
 
-        public async Task<List<Satellite>> GetSatellitesAsync()
+        /// <summary>
+        /// Вернуть список CosparID всех спутников, которые есть в БД
+        /// </summary>
+        /// <exception cref="Exception"></exception>
+        public async Task<List<string>> GetSatellitesCosparIdsAsync()
         {
             RestRequest request = new($"{_IP}/Satellites/GetAll");
 
@@ -31,11 +35,18 @@ namespace DZZMan.API
             if (!resp.IsSuccessful)
                 throw new Exception($"Unrecognized exception: {resp.StatusCode}");
 
-            List<Satellite> satellites = JsonConvert.DeserializeObject<List<Satellite>>(resp.Content); ;
+            List<string> satellites = JsonConvert.DeserializeObject<List<string>>(resp.Content); ;
 
             return satellites;
         }
 
+        /// <summary>
+        /// Получить данные о спутнике 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="NoSatellitesException">Спутники в БД отсутствуют. Возможно проблема с подключением</exception>
+        /// <exception cref="Exception"></exception>
         public async Task<Satellite> GetSatelliteAsync(string name)
         {
             RestRequest request = new($"{_IP}/Satellites/Get?name={name}");

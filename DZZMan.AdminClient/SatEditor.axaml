@@ -1,0 +1,135 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="DZZMan.AdminClient.SatEditor"
+        Title="SatEditor">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition MinWidth="200" Width="3*"/>
+			<ColumnDefinition MinWidth="300" Width="7*"/>
+		</Grid.ColumnDefinitions>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="40"/>
+		</Grid.RowDefinitions>
+
+		<Label Grid.Column="0"
+               Grid.Row="0"
+               VerticalAlignment="Center">
+			Name
+		</Label>
+
+		<TextBox x:Name="NameTB"
+                 Grid.Row="0"
+                 Grid.Column="1"
+                 Margin="5"/>
+
+		<Label Grid.Column="0"
+               Grid.Row="1"
+               VerticalAlignment="Center">
+			COSPAR ID
+		</Label>
+
+		<TextBox x:Name="CosparIDTB"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="5"/>
+
+		<Label Grid.Column="0"
+               Grid.Row="2"
+               VerticalAlignment="Center">
+			SCN
+		</Label>
+
+		<TextBox x:Name="SCNTB"
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 Margin="5"/>
+
+		<Label Grid.Column="0"
+               Grid.Row="3"
+               VerticalAlignment="Center">
+			Scanner type
+		</Label>
+
+		<ComboBox x:Name="SensorTypeComboBox"
+                  Grid.Row="3"
+                  Grid.Column="1"
+                  SelectedIndex="0"
+                  SelectionChanged="SensorType_OnSelectionChanged"
+                  Margin="5">
+			<ComboBoxItem Content="Сканерный"/>
+			<ComboBoxItem Content="Кадровый"/>
+		</ComboBox>
+
+		<StackPanel Grid.Row="4">
+			<Grid x:Name="ScannerSensorParamsGrid">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition MinWidth="200" Width="3*"/>
+					<ColumnDefinition MinWidth="300" Width="7*"/>
+				</Grid.ColumnDefinitions>
+
+				<Label Grid.Column="0"
+                       Grid.Row="0"
+                       VerticalAlignment="Center">
+					Swath
+				</Label>
+
+				<TextBox Grid.Row="0"
+                         Grid.Column="1"
+                         x:Name="SwathTB"
+                         Margin="5"/>
+			</Grid>
+			
+			<Grid x:Name="FrameSensorParamsGrid" IsVisible="False">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition MinWidth="200" Width="3*"/>
+					<ColumnDefinition MinWidth="300" Width="7*"/>
+				</Grid.ColumnDefinitions>
+
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				
+				<Label Grid.Column="0"
+                       Grid.Row="0"
+                       VerticalAlignment="Center">
+					Width
+				</Label>
+
+				<TextBox Grid.Row="0"
+                         Grid.Column="1"
+                         x:Name="WidthTB"
+                         Margin="5"/>
+
+				<Label Grid.Column="0"
+                       Grid.Row="1"
+                       VerticalAlignment="Center">
+					Length
+				</Label>
+
+				<TextBox x:Name="LengthTB"
+                         Grid.Row="1"
+                         Grid.Column="1"
+                         Margin="5"/>
+			</Grid>
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal"
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right">
+			<Button Width="100" Margin="5" x:Name="CancelButton" Click="CancelButton_OnClick">Отмена</Button>
+			<Button Width="100" Margin="5" x:Name="OKButton" Click="OKButton_OnClick">OK</Button>
+		</StackPanel>
+	</Grid>
+</Window>

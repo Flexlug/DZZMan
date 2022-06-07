@@ -8,7 +8,6 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
   </PropertyGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
@@ -23,13 +22,16 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.10.14" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.14" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.14" />
-    <PackageReference Include="Mapsui.Avalonia" Version="4.0.0-beta.4" />
     <PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
-    <PackageReference Include="SGP.NET" Version="1.2.1" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="SatEditor.axaml.cs">
+      <DependentUpon>SatEditor.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DZZMan.API\DZZMan.API.csproj" />
     <ProjectReference Include="..\DZZMan.Models\DZZMan.Models.csproj" />
   </ItemGroup>
 </Project>

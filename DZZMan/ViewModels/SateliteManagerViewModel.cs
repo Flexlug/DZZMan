@@ -14,16 +14,16 @@ using Avalonia.Controls;
 
 namespace DZZMan.ViewModels
 {
-    public class TLEManagerViewModel : ViewModelBase
+    public class SateliteManagerViewModel : ViewModelBase
     {
-        private TLEManagerModel _model;
+        private SateliteManagerModel _model;
         
-        public ReadOnlyObservableCollection<TLEWrapper> TLEs { get; }
+        public ReadOnlyObservableCollection<SateliteWrapper> Satelites { get; }
 
-        public TLEManagerViewModel()
+        public SateliteManagerViewModel()
         {
             _model = new();
-            TLEs = _model.AvailableTLEs;
+            Satelites = _model.AvailableTLEs;
 
             OkButton = ReactiveCommand.Create<Window>((x) =>
             {
@@ -46,9 +46,9 @@ namespace DZZMan.ViewModels
             }
         }
 
-        public IReadOnlyCollection<TLEWrapper> Ok()
+        public IReadOnlyCollection<SateliteWrapper> Ok()
         {
-            return TLEs;
+            return Satelites;
         }
 
         public ReactiveCommand<Window, Unit> OkButton { get; set; }

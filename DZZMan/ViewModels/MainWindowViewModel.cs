@@ -14,6 +14,8 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using BruTile.Wmts.Generated;
+using DZZMan.Models.TLEManager;
 
 namespace DZZMan.ViewModels
 {
@@ -30,7 +32,13 @@ namespace DZZMan.ViewModels
         /// <summary>
         /// Выбранный в DataGrid слой
         /// </summary>
-        public SateliteLayer SelectedLayer { get; set; }
+        public SateliteLayer SelectedLayer
+        {
+            get => _selectedLayer;
+            set => this.RaiseAndSetIfChanged(ref _selectedLayer, value);
+        }
+        private SateliteLayer _selectedLayer = null;
+    
 
         private Map _map;
 
@@ -43,26 +51,27 @@ namespace DZZMan.ViewModels
 
             SateliteLayers = new();
 
-            OpenTLEManager = ReactiveCommand.Create<Window>(async (x) => await LoadTLEManager(x));
+            OpenSateliteManager = ReactiveCommand.Create<Window>(async (x) => await LoadSateliteManager(x));
         }
 
         /// <summary>
         /// Открыть окно для добавления/удаления доступных TLE
         /// </summary>
-        public ReactiveCommand<Window, Unit> OpenTLEManager { get; }
+        public ReactiveCommand<Window, Unit> OpenSateliteManager { get; }
 
-        private async Task LoadTLEManager(Window mainWindow)
+        private async Task LoadSateliteManager(Window mainWindow)
         {
             var tleManager = new TLEManager();
             await tleManager.ShowDialog(mainWindow);
 
-            var tlesResult = tleManager?.ViewModel?.TLEs;
+            var tlesResult = tleManager?.ViewModel?.Satelites;
 
             if (tlesResult is null)
             {
                 return;
             }
 
+            SateliteLayer lastSateliteLayer = null;
             foreach (var tleWrapper in tlesResult.Where(x => x.IsChecked))
             {
                 var existingLayers = _map.Layers.FindLayer(tleWrapper.TLE.Name);
@@ -71,8 +80,12 @@ namespace DZZMan.ViewModels
                     var sateliteLayer = _model.CreateSateliteLayer(tleWrapper.TLE);
                     _map.Layers.Add(sateliteLayer);
                     SateliteLayers.Add(sateliteLayer);
+
+                    lastSateliteLayer = sateliteLayer;
                 }
             }
+
+            SelectedLayer = lastSateliteLayer;
         }
     }
 }

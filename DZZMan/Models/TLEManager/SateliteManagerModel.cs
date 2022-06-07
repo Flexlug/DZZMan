@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace DZZMan.Models.TLEManager
 {
-    internal class TLEManagerModel
+    internal class SateliteManagerModel
     {
         /// <summary>
         /// Доступные TLE
         /// </summary>
-        public ReadOnlyObservableCollection<TLEWrapper> AvailableTLEs { get; set; }
-        private ObservableCollection<TLEWrapper> _tles = new();
+        public ReadOnlyObservableCollection<SateliteWrapper> AvailableTLEs { get; set; }
+        private ObservableCollection<SateliteWrapper> _tles = new();
 
-        public TLEManagerModel()
+        public SateliteManagerModel()
         {
             AvailableTLEs = new(_tles);
         }
@@ -36,7 +36,7 @@ namespace DZZMan.Models.TLEManager
 
             foreach (var tle in newTles.Values)
             {
-                _tles.Add(new TLEWrapper
+                _tles.Add(new SateliteWrapper
                 {
                     IsChecked = false,
                     TLE = tle

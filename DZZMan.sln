@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.SGPNET-Test", "DZZMa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan.SatImageRetriever", "DZZMan.SatImageRetriever\DZZMan.SatImageRetriever.csproj", "{90B806F1-892A-4BDE-A2FE-0C41427B079B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DZZMan", "DZZMan\DZZMan.csproj", "{8FD0B910-1398-4C33-A745-29EEE7AE232F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DZZMan", "DZZMan\DZZMan.csproj", "{8FD0B910-1398-4C33-A745-29EEE7AE232F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DZZMan.AdminClient", "DZZMan.AdminClient\DZZMan.AdminClient.csproj", "{FCA97D5F-05EA-4B7B-B8D7-15CE632DD7E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{8FD0B910-1398-4C33-A745-29EEE7AE232F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FD0B910-1398-4C33-A745-29EEE7AE232F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FD0B910-1398-4C33-A745-29EEE7AE232F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCA97D5F-05EA-4B7B-B8D7-15CE632DD7E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCA97D5F-05EA-4B7B-B8D7-15CE632DD7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCA97D5F-05EA-4B7B-B8D7-15CE632DD7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCA97D5F-05EA-4B7B-B8D7-15CE632DD7E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
