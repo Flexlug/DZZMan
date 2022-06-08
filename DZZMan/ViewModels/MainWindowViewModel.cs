@@ -64,7 +64,7 @@ namespace DZZMan.ViewModels
             var tleManager = new TLEManager();
             await tleManager.ShowDialog(mainWindow);
 
-            var tlesResult = tleManager?.ViewModel?.Satelites;
+            var tlesResult = tleManager?.ViewModel?.Satellites;
 
             if (tlesResult is null)
             {

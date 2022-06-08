@@ -18,8 +18,7 @@ public class ServiceProvider
     {
         _services = new ServiceCollection()
             .AddSingleton(new DZZManApi("http://flexlug.ru"))
-            .AddSingleton<ISatelliteRepositoryService, SatelliteRepositoryService>()
-            .AddTransient<SatelliteManagerModel>()
+            .AddSingleton<SatelliteManagerModel>()
             .BuildServiceProvider();
     }
 

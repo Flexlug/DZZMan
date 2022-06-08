@@ -18,9 +18,9 @@
 						<RowDefinition Height="50"/>
 					</Grid.RowDefinitions>
 
-					<CheckBox IsChecked="False" Margin="5, 0, 0, 0" Grid.Row="0">Показывать только те спутники, которые есть в БД</CheckBox>
+					<CheckBox x:Name="DbOnlyCheckbox" IsChecked="{Binding OnlyDb}" Margin="5, 0, 0, 0" Grid.Row="0">Показывать только те спутники, которые есть в БД</CheckBox>
 							  
-					<DataGrid Grid.Row="1" Items="{Binding Satelites}" CanUserSortColumns="True" CanUserResizeColumns="True">
+					<DataGrid Grid.Row="1" Items="{Binding Satellites}" CanUserSortColumns="True" CanUserResizeColumns="True">
 						<DataGrid.Columns>
 							<DataGridTemplateColumn Header="*" SortMemberPath="IsChecked">
 								<DataGridTemplateColumn.CellTemplate>
