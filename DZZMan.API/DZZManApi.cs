@@ -5,6 +5,7 @@ using DZZMan.Models;
 using RestSharp;
 
 using Newtonsoft.Json;
+using RestSharp.Serializers.NewtonsoftJson;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace DZZMan.API
@@ -27,13 +28,14 @@ namespace DZZMan.API
             _IP = IP;
 
             _hasToken = false;
+            client.UseNewtonsoftJson(_settings);
         }
 
         /// <summary>
         /// Вернуть список CosparID всех спутников, которые есть в БД
         /// </summary>
         /// <exception cref="Exception"></exception>
-        public async Task<List<string>> GetSatellitesCosparIdsAsync()
+        public async Task<List<Satellite>> GetSatellitesAsync()
         {
             RestRequest request = new($"{_IP}/Satellites/GetAll");
 
@@ -42,7 +44,7 @@ namespace DZZMan.API
             if (!resp.IsSuccessful)
                 throw new Exception($"Unrecognized exception: {resp.StatusCode}");
 
-            List<string> satellites = JsonConvert.DeserializeObject<List<string>>(resp.Content, _settings); ;
+            var satellites = JsonConvert.DeserializeObject<List<Satellite>>(resp.Content, _settings); ;
 
             return satellites;
         }
@@ -95,8 +97,8 @@ namespace DZZMan.API
                 throw new UnauthorizedAccessException("You did not logged in");
 
             RestRequest request = new($"{_IP}/Satellites/Add");
-
-            request.AddBody(new JsonParameter("", JsonConvert.SerializeObject(satellite, _settings)));
+            
+            request.AddJsonBody(satellite);
             request.AddHeader("DZZ-Auth", _token);
 
             var resp = await client.PutAsync(request);
@@ -118,7 +120,7 @@ namespace DZZMan.API
 
             RestRequest request = new($"{_IP}/Satellites/Update");
 
-            request.AddBody(new JsonParameter("", JsonConvert.SerializeObject(satellite, _settings)));
+            request.AddJsonBody(satellite);
             request.AddHeader("DZZ-Auth", _token);
 
             var resp = await client.PostAsync(request);
@@ -162,7 +164,7 @@ namespace DZZMan.API
             if (!resp.IsSuccessful)
                 throw new Exception($"Unrecognized exception: {resp.StatusCode}");
 
-            var satellites = JsonConvert.DeserializeObject<List<Satellite>>(resp.Content); ;
+            var satellites = JsonConvert.DeserializeObject<List<Satellite>>(resp.Content, _settings); ;
 
             return satellites;
         }
@@ -179,7 +181,7 @@ namespace DZZMan.API
             if (!resp.IsSuccessful)
                 throw new Exception($"Unrecognized exception: {resp.StatusCode}");
 
-            Satellite satellite = JsonConvert.DeserializeObject<Satellite>(resp.Content); ;
+            Satellite satellite = JsonConvert.DeserializeObject<Satellite>(resp.Content, _settings); ;
 
             return satellite;
         }
@@ -209,7 +211,7 @@ namespace DZZMan.API
 
             RestRequest request = new($"{_IP}/Satellites/Add");
 
-            request.AddBody(new JsonParameter("", JsonConvert.SerializeObject(satellite, _settings)));
+            request.AddJsonBody(satellite);
             request.AddHeader("DZZ-Auth", _token);
 
             var resp = client.PutAsync(request).Result;
@@ -231,7 +233,7 @@ namespace DZZMan.API
 
             RestRequest request = new($"{_IP}/Satellites/Update");
 
-            request.AddBody(new JsonParameter("", JsonConvert.SerializeObject(satellite, _settings)));
+            request.AddJsonBody(satellite);
             request.AddHeader("DZZ-Auth", _token);
 
             var resp = client.PostAsync(request).Result;

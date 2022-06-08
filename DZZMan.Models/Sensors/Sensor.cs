@@ -11,6 +11,6 @@ namespace DZZMan.Models.Sensors
         /// <summary>s
         /// Тип аэрофотосъемочной аппаратуры спутника
         /// </summary>
-        public virtual SensorType SensorType { get; set; }
+        public SensorType SensorType { get; set; }
     }
 }

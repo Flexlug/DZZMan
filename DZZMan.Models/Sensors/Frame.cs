@@ -20,9 +20,9 @@ namespace DZZMan.Models.Sensors
         /// </summary>
         public double Length{ get; set; }
 
-        /// <summary>s
-        /// Тип аэрофотосъемочной аппаратуры спутника
-        /// </summary>
-        public override SensorType SensorType { get; set; } = SensorType.Frame;
+        public Frame()
+        {
+            SensorType = SensorType.Frame;
+        }
     }
 }

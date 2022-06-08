@@ -86,8 +86,8 @@ namespace DZZMan.AdminClient
                 catch (Exception ex)
                 {                    
                     MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                        $"Возникла ошибка при обновлении данных: {ex}", 
                         "Ошибка", 
+                        $"Возникла ошибка при обновлении данных: {ex}", 
                         ButtonEnum.Ok, 
                         MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this).ConfigureAwait(false);
                 }
@@ -103,8 +103,8 @@ namespace DZZMan.AdminClient
             if (SatellitesList.SelectedItem is null)
             {
                 MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                    "Не выбран спутник", 
                     "Ошибка", 
+                    "Не выбран спутник", 
                     ButtonEnum.Ok, 
                     MessageBox.Avalonia.Enums.Icon.Warning).ShowDialog(this).ConfigureAwait(false);
                 return;
@@ -119,8 +119,8 @@ namespace DZZMan.AdminClient
             catch (Exception ex)
             {                    
                 MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                    $"Возникла ошибка при обновлении данных: {ex}", 
                     "Ошибка", 
+                    $"Возникла ошибка при обновлении данных: {ex}", 
                     ButtonEnum.Ok, 
                     MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this).ConfigureAwait(false);
             }

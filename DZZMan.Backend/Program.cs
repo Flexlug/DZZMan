@@ -1,6 +1,7 @@
 using DZZMan.Backend;
 using DZZMan.Backend.Database;
 using DZZMan.Backend.Database.Providers;
+using Newtonsoft.Json;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -17,21 +18,21 @@ var settings = builder.Configuration.GetSection("Database").Get<Settings>();
 
 builder.Logging.AddSerilog(dispose: true);
 
+// Add services to the container.
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(options => options.SerializerSettings.TypeNameHandling = TypeNameHandling.All);
+
 builder.Services
     .AddSingleton<Settings>(settings)
     .AddSingleton<DocumentStoreProvider>()
     .AddSingleton<SatelliteProvider>()
     .AddSingleton<TokenProvider>();
 
-// Add services to the container.
-builder.Services
-    .AddControllers();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();
-
 
 var app = builder.Build();
 

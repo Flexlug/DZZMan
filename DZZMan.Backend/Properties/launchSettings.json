@@ -19,7 +19,7 @@
         "DB_NAME": "DZZMan.DB",
         "DB_PORT": "8080"
       },
-      "applicationUrl": "http://localhost:5061",
+      "applicationUrl": "http://localhost:80",
       "dotnetRunMessages": true
     },
     "Docker": {
