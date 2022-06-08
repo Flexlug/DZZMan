@@ -133,7 +133,16 @@ namespace DZZMan.AdminClient
             MainContent.IsEnabled = false;
             var satellite = (sender as StackPanel).DataContext as Satellite;
 
-            var editor = new SatEditor();
+            if (satellite is null)
+            {
+                MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                    "Îøèáêà", 
+                    $"NullReferenceException in field satellite, method InputElement_OnDoubleTapped", 
+                    ButtonEnum.Ok, 
+                    MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this).ConfigureAwait(false);
+            }
+            
+            var editor = new SatEditor(satellite);
             using (var source = new CancellationTokenSource())
             {
                 editor.ShowDialog(this).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());

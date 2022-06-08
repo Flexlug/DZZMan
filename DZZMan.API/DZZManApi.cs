@@ -1,9 +1,11 @@
-﻿using DZZMan.API.Exceptions;
+﻿using System.Text.Json;
+using DZZMan.API.Exceptions;
 using DZZMan.Models;
 
 using RestSharp;
 
 using Newtonsoft.Json;
+using RestSharp.Serializers.Json;
 
 namespace DZZMan.API
 {
@@ -19,7 +21,7 @@ namespace DZZMan.API
         {
             _IP = IP;
 
-            _hasToken = false;
+            _hasToken = false
         }
 
         /// <summary>
