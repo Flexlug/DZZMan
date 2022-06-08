@@ -103,10 +103,10 @@ namespace DZZMan.AdminClient
             if (SensorTypeComboBox.SelectedIndex == -1)
             {
                 MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                    $"Не выбран тип сенсора", 
                     "Ошибка", 
+                    $"Не выбран тип сенсора", 
                     ButtonEnum.Ok, 
-                    MessageBox.Avalonia.Enums.Icon.Error);
+                    MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this);
                 return;
             }
 
@@ -115,20 +115,20 @@ namespace DZZMan.AdminClient
                 if (string.IsNullOrEmpty(SwathTB.Text))
                 {
                     MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                        $"Не введена ширина полосы съемки (Swath)", 
                         "Ошибка", 
+                        $"Не введена ширина полосы съемки (Swath)", 
                         ButtonEnum.Ok, 
-                        MessageBox.Avalonia.Enums.Icon.Error);
+                        MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this);
                     return;
                 }
                 
                 if (!double.TryParse(SwathTB.Text, out swath))
                 {
                     MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                        "Значение Swath не является дробным числом", 
                         "Ошибка", 
+                        "Значение Swath не является дробным числом", 
                         ButtonEnum.Ok, 
-                        MessageBox.Avalonia.Enums.Icon.Error);
+                        MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this);
                     return;
                 }
             }
@@ -139,10 +139,10 @@ namespace DZZMan.AdminClient
                     string.IsNullOrEmpty(LengthTB.Text))
                 {
                     MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                        $"Не введены размеры кадра (Width и Length)", 
                         "Ошибка", 
+                        $"Не введены размеры кадра (Width и Length)", 
                         ButtonEnum.Ok, 
-                        MessageBox.Avalonia.Enums.Icon.Error);
+                        MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this);
                     return;
                 }
                 
@@ -150,10 +150,10 @@ namespace DZZMan.AdminClient
                     !double.TryParse(LengthTB.Text, out length))
                 {                
                     MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                        "Значение Width или Length не является дробным числом", 
                         "Ошибка", 
+                        "Значение Width или Length не является дробным числом", 
                         ButtonEnum.Ok, 
-                        MessageBox.Avalonia.Enums.Icon.Error);
+                        MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this);
                     return;
                 }
             }

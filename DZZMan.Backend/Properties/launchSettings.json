@@ -15,23 +15,12 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DB_IP": "192.168.2.39",
+        "DB_IP": "flexlug.ru",
         "DB_NAME": "DZZMan.DB",
         "DB_PORT": "8080"
       },
       "applicationUrl": "http://localhost:5061",
       "dotnetRunMessages": true
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DB_IP": "192.168.2.39",
-        "DB_NAME": "DZZMan.DB",
-        "DB_PORT": "8080"
-      }
     },
     "Docker": {
       "commandName": "Docker",

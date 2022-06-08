@@ -24,10 +24,5 @@ namespace DZZMan.Models
         /// Информация о сенсоре спутника
         /// </summary>
         public Sensor Sensor { get; set; }
-
-        /// <summary>
-        /// Сердняя высота спутника
-        /// </summary>
-        public double Height { get; set; }
     }
 }

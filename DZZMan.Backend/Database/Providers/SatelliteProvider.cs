@@ -16,7 +16,7 @@ namespace DZZMan.Backend.Database.Providers
             _logger = logger;
         }
 
-        public async Task<List<string>> GetSatellitesCosparIdsAsync()
+        public async Task<List<Satellite>> GetSatellitesAsync()
         {
             using (IAsyncDocumentSession session = _store.OpenAsyncSession(
                 new Raven.Client.Documents.Session.SessionOptions() { NoTracking = true }))
@@ -24,7 +24,6 @@ namespace DZZMan.Backend.Database.Providers
                 var satelitesCosparIds= await session
                     .Query<Satellite>()
                     .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(5)))
-                    .Select(x => x.CosparId)
                     .ToListAsync();
 
                 return satelitesCosparIds;

@@ -1,10 +1,15 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using DZZMan.API;
 using DZZMan.Models;
 using MessageBox.Avalonia.Enums;
+using ReactiveUI;
 
 namespace DZZMan.AdminClient
 {
@@ -30,19 +35,19 @@ namespace DZZMan.AdminClient
             catch (AggregateException)
             {
                 MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                    "Неверный токен",
                     "Внимание",
+                    "Неверный токен",
                     ButtonEnum.Ok,
-                    MessageBox.Avalonia.Enums.Icon.Warning);
+                    MessageBox.Avalonia.Enums.Icon.Warning).ShowDialog(this).ConfigureAwait(false);
                 return;
             }
             catch(Exception ex)
             {
                 MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                    $"Неожиданная ошибка: {ex}", 
                     "Ошибка", 
+                    $"Неожиданная ошибка: {ex}", 
                     ButtonEnum.Ok, 
-                    MessageBox.Avalonia.Enums.Icon.Warning);
+                    MessageBox.Avalonia.Enums.Icon.Warning).ShowDialog(this).ConfigureAwait(false);
                 return;
             }
 
@@ -61,9 +66,14 @@ namespace DZZMan.AdminClient
         private void AddButton_OnClick(object? sender, RoutedEventArgs e)
         {
             MainContent.IsEnabled = false;
-
+            
             var editor = new SatEditor();
-            var resultSubmited = editor.ShowDialog<bool>(this).Result;
+            using (var source = new CancellationTokenSource())
+            {
+                editor.ShowDialog(this).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
+            }
+            var resultSubmited = editor.Result;
             
             if (resultSubmited)
             {
@@ -79,7 +89,7 @@ namespace DZZMan.AdminClient
                         $"Возникла ошибка при обновлении данных: {ex}", 
                         "Ошибка", 
                         ButtonEnum.Ok, 
-                        MessageBox.Avalonia.Enums.Icon.Error);
+                        MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this).ConfigureAwait(false);
                 }
             }
 
@@ -96,7 +106,7 @@ namespace DZZMan.AdminClient
                     "Не выбран спутник", 
                     "Ошибка", 
                     ButtonEnum.Ok, 
-                    MessageBox.Avalonia.Enums.Icon.Warning);
+                    MessageBox.Avalonia.Enums.Icon.Warning).ShowDialog(this).ConfigureAwait(false);
                 return;
             }
 
@@ -112,7 +122,7 @@ namespace DZZMan.AdminClient
                     $"Возникла ошибка при обновлении данных: {ex}", 
                     "Ошибка", 
                     ButtonEnum.Ok, 
-                    MessageBox.Avalonia.Enums.Icon.Error);
+                    MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this).ConfigureAwait(false);
             }
 
             MainContent.IsEnabled = true;
@@ -121,10 +131,15 @@ namespace DZZMan.AdminClient
         private void InputElement_OnDoubleTapped(object? sender, RoutedEventArgs e)
         {            
             MainContent.IsEnabled = false;
-            Satellite satellite = (sender as ListBoxItem).DataContext as Satellite;
+            var satellite = (sender as StackPanel).DataContext as Satellite;
 
-            var editor = new SatEditor(satellite);
-            var resultSubmited = editor.ShowDialog<bool>(this).Result;
+            var editor = new SatEditor();
+            using (var source = new CancellationTokenSource())
+            {
+                editor.ShowDialog(this).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
+            }
+            var resultSubmited = editor.Result;
             
             if (resultSubmited)
             {
@@ -137,10 +152,10 @@ namespace DZZMan.AdminClient
                 catch(Exception ex)
                 {
                     MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                        $"Возникла ошибка при обновлении данных: {ex}", 
                         "Ошибка", 
+                        $"Возникла ошибка при обновлении данных: {ex}", 
                         ButtonEnum.Ok, 
-                        MessageBox.Avalonia.Enums.Icon.Error);
+                        MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this).ConfigureAwait(false);
                 }
             }
 

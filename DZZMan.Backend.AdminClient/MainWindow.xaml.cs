@@ -24,7 +24,7 @@ namespace DZZMan.Backend.AdminClient
     public partial class MainWindow : Window
     {
         private DZZManApi api = null;
-        private ObservableCollection<Satellite> Satellites { get; set; } = new();
+        private ObservableCollection<string> Satellites { get; set; } = new();
 
         public MainWindow()
         {

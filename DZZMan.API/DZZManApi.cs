@@ -155,7 +155,7 @@ namespace DZZMan.API
             if (!resp.IsSuccessful)
                 throw new Exception($"Unrecognized exception: {resp.StatusCode}");
 
-            List<Satellite> satellites = JsonConvert.DeserializeObject<List<Satellite>>(resp.Content); ;
+            var satellites = JsonConvert.DeserializeObject<List<Satellite>>(resp.Content); ;
 
             return satellites;
         }
