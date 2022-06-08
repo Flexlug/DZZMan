@@ -21,7 +21,7 @@ namespace DZZMan.API
         {
             _IP = IP;
 
-            _hasToken = false
+            _hasToken = false;
         }
 
         /// <summary>

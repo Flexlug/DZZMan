@@ -13,9 +13,9 @@ namespace DZZMan.Models.Sensors
         /// </summary>
         public double Swath { get; set; }
 
-        public Scanner()
-        {
-            SensorType = SensorType.Scanner;
-        }
+        /// <summary>s
+        /// Тип аэрофотосъемочной аппаратуры спутника
+        /// </summary>
+        public override SensorType SensorType { get; set; } = SensorType.Scanner;
     }
 }
