@@ -5,7 +5,7 @@ using DZZMan.Models;
 using RestSharp;
 
 using Newtonsoft.Json;
-using RestSharp.Serializers.Json;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace DZZMan.API
 {
@@ -16,6 +16,11 @@ namespace DZZMan.API
 
         private bool _hasToken;
         private string _token = string.Empty;
+
+        private JsonSerializerSettings _settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
 
         public DZZManApi(string IP)
         {
@@ -37,7 +42,7 @@ namespace DZZMan.API
             if (!resp.IsSuccessful)
                 throw new Exception($"Unrecognized exception: {resp.StatusCode}");
 
-            List<string> satellites = JsonConvert.DeserializeObject<List<string>>(resp.Content); ;
+            List<string> satellites = JsonConvert.DeserializeObject<List<string>>(resp.Content, _settings); ;
 
             return satellites;
         }
@@ -61,7 +66,7 @@ namespace DZZMan.API
             if (!resp.IsSuccessful)
                 throw new Exception($"Unrecognized exception: {resp.StatusCode}");
 
-            Satellite satellite = JsonConvert.DeserializeObject<Satellite>(resp.Content); ;
+            Satellite satellite = JsonConvert.DeserializeObject<Satellite>(resp.Content, _settings); ;
 
             return satellite;
         }
@@ -91,7 +96,7 @@ namespace DZZMan.API
 
             RestRequest request = new($"{_IP}/Satellites/Add");
 
-            request.AddJsonBody(satellite);
+            request.AddBody(new JsonParameter("", JsonConvert.SerializeObject(satellite, _settings)));
             request.AddHeader("DZZ-Auth", _token);
 
             var resp = await client.PutAsync(request);
@@ -113,7 +118,7 @@ namespace DZZMan.API
 
             RestRequest request = new($"{_IP}/Satellites/Update");
 
-            request.AddJsonBody(satellite);
+            request.AddBody(new JsonParameter("", JsonConvert.SerializeObject(satellite, _settings)));
             request.AddHeader("DZZ-Auth", _token);
 
             var resp = await client.PostAsync(request);
@@ -204,7 +209,7 @@ namespace DZZMan.API
 
             RestRequest request = new($"{_IP}/Satellites/Add");
 
-            request.AddJsonBody(satellite);
+            request.AddBody(new JsonParameter("", JsonConvert.SerializeObject(satellite, _settings)));
             request.AddHeader("DZZ-Auth", _token);
 
             var resp = client.PutAsync(request).Result;
@@ -226,7 +231,7 @@ namespace DZZMan.API
 
             RestRequest request = new($"{_IP}/Satellites/Update");
 
-            request.AddJsonBody(satellite);
+            request.AddBody(new JsonParameter("", JsonConvert.SerializeObject(satellite, _settings)));
             request.AddHeader("DZZ-Auth", _token);
 
             var resp = client.PostAsync(request).Result;
