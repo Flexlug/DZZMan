@@ -11,19 +11,21 @@ using SGPdotNET.TLE;
 using DZZMan.Models.TLEManager;
 using ReactiveUI;
 using Avalonia.Controls;
+using DZZMan.Services;
 
 namespace DZZMan.ViewModels
 {
-    public class SateliteManagerViewModel : ViewModelBase
+    public class SatelliteManagerViewModel : ViewModelBase
     {
-        private SateliteManagerModel _model;
+        private SatelliteManagerModel _model;
         
         public ReadOnlyObservableCollection<SateliteWrapper> Satelites { get; }
+        private ObservableCollection<SateliteWrapper> _satellites;
 
-        public SateliteManagerViewModel()
+        public SatelliteManagerViewModel()
         {
-            _model = new();
-            Satelites = _model.AvailableTLEs;
+            _model = ServiceProvider.Get<SatelliteManagerModel>();
+            _satellites = new();
 
             OkButton = ReactiveCommand.Create<Window>((x) =>
             {
@@ -32,7 +34,7 @@ namespace DZZMan.ViewModels
 
             try
             {
-                _model.GetCelestrakTLEs();
+                _model.GetTLEs(false);
             }
             catch (NullReferenceException)
             {

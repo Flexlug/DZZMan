@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="SGP.NET" Version="1.2.1" />
+    <PackageReference Include="SunCalcNet" Version="1.2.0" />
   </ItemGroup>
 
 </Project>

@@ -7,13 +7,13 @@ using ReactiveUI;
 
 namespace DZZMan.Views
 {
-    public partial class TLEManager : ReactiveWindow<SateliteManagerViewModel>
+    public partial class TLEManager : ReactiveWindow<SatelliteManagerViewModel>
     {
         public TLEManager()
         {
             InitializeComponent();
 
-            DataContext = new SateliteManagerViewModel();
+            DataContext = new SatelliteManagerViewModel();
 
 #if DEBUG
             this.AttachDevTools();

@@ -1,0 +1,2 @@
+https://wpftutorial.net/ReferenceArchitecture.html 
+https://smarly.net/dependency-injection-in-net/diy-di/object-composition/composing-wpf-applications

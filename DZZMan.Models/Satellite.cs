@@ -18,7 +18,7 @@ namespace DZZMan.Models
         /// <summary>
         /// Номер спутника по каталогу NORAD
         /// </summary>
-        public string SCN { get; set; }
+        public int SCN { get; set; }
 
         /// <summary>
         /// Информация о сенсоре спутника

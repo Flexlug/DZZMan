@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace DZZMan.Views
 {
-    public partial class MainWindow : ReactiveWindow<SateliteManagerViewModel>
+    public partial class MainWindow : ReactiveWindow<SatelliteManagerViewModel>
     {
         public MainWindow()
         {

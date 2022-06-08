@@ -34,7 +34,7 @@ namespace DZZMan.AdminClient
 
             NameTB.Text = Satellite.Name;
             CosparIDTB.Text = Satellite.CosparId;
-            SCNTB.Text = Satellite.SCN;
+            SCNTB.Text = Satellite.SCN.ToString();
             SwitchSensorType(Satellite.Sensor.SensorType);
             switch (Satellite.Sensor.SensorType)
             {
@@ -99,6 +99,18 @@ namespace DZZMan.AdminClient
             double swath = 0;
             double width = 0;
             double length = 0;
+
+            int scn = 0;
+
+            if (!int.TryParse(SCNTB.Text, out scn))
+            {
+                MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                    "Ошибка", 
+                    "Значение SCN не является целым числом", 
+                    ButtonEnum.Ok, 
+                    MessageBox.Avalonia.Enums.Icon.Error).ShowDialog(this);
+                return;
+            }
             
             if (SensorTypeComboBox.SelectedIndex == -1)
             {
@@ -162,7 +174,7 @@ namespace DZZMan.AdminClient
             {
                 Name = NameTB.Text,
                 CosparId = CosparIDTB.Text,
-                SCN = SCNTB.Text,
+                SCN = scn,
                 Sensor = SensorTypeComboBox.SelectedIndex switch
                 {
                     0 => new Scanner()
