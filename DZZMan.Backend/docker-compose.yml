@@ -1,0 +1,9 @@
+
+version: '3.8'
+
+services:
+  dzzman:
+    image: flexlug/dzzman:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
