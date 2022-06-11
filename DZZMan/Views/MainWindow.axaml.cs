@@ -7,14 +7,20 @@ using ReactiveUI;
 
 namespace DZZMan.Views
 {
-    public partial class MainWindow : ReactiveWindow<SatelliteManagerViewModel>
+    public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         public MainWindow()
         {
             InitializeComponent();
             InitializeMap();
 
-            DataContext = new MainWindowViewModel(MapControl.Map);
+            var viewModel = new MainWindowViewModel(MapControl.Map);
+            DataContext = viewModel;
+
+            viewModel.OnMapChanged += () =>
+            {
+                MapControl.Refresh();
+            };
         }
 
         private void InitializeMap()
@@ -23,7 +29,6 @@ namespace DZZMan.Views
             map.RotationLock = false;
             map.PanLock = false;
 
-            var osm = OpenStreetMap.CreateTileLayer();
             map.Layers.Add(OpenStreetMap.CreateTileLayer());
 
             MapControl.Map = map;

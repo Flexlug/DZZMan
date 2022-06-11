@@ -12,8 +12,8 @@ namespace DZZMan.Utils
     {
         public static Style DefaultVectorStyle() => new VectorStyle()
         {
-            Fill = null,
-            Outline = new(Color.Black, 5),
+            Fill = new Brush(Color.FromArgb(50, 255, 0, 0)),
+            Outline = null,
             Line = {
                 Color = Color.Black
             }

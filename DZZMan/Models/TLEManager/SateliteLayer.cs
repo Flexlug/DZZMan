@@ -12,14 +12,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DZZMan.ViewModels.Models
+namespace DZZMan.Models.TLEManager
 {
-    public class SateliteLayer : Layer, INotifyPropertyChanged
+    public class SateliteLayer : Layer
     {
         /// <summary>
         /// Timestamp первой точки маршрута спутника
@@ -28,15 +29,17 @@ namespace DZZMan.ViewModels.Models
         {
             get
             {
-                return _traceEndPoint;
+                return _traceStartPoint;
             }
             set
             {
                 _traceStartPoint = value;
                 GenerateTrace();
                 UpdateMemoryProvider();
+                OnPropertyChanged(nameof(TraceStartPoint));
             }
         }
+
         private DateTime _traceStartPoint;
 
         /// <summary>
@@ -53,6 +56,7 @@ namespace DZZMan.ViewModels.Models
                 _traceEndPoint = value;
                 GenerateTrace();
                 UpdateMemoryProvider();
+                OnPropertyChanged(nameof(TraceEndPoint));
             }
         }
         private DateTime _traceEndPoint;
@@ -65,8 +69,10 @@ namespace DZZMan.ViewModels.Models
             }
             set
             {
-                GenerateTrace();
+                _currentPoint = value;
+                GenerateFootprintBoundry();
                 UpdateMemoryProvider();
+                OnPropertyChanged(nameof(CurrentPoint));
             }
         }
         private DateTime _currentPoint;
@@ -82,7 +88,7 @@ namespace DZZMan.ViewModels.Models
         public Orbit Orbit { get; set; }
 
         /// <summary>
-        /// Плотность точек на маршруте
+        /// Плотность точек на маршруте (количество точек на один виток)
         /// </summary>
         public int Density
         {
@@ -158,13 +164,14 @@ namespace DZZMan.ViewModels.Models
             Period = TimeSpan.FromMinutes(_sgp.Orbit.Period);
 
             _currentPoint = DateTime.Now;
+            _traceStartPoint = _currentPoint - Period;
+            _traceEndPoint = _currentPoint + Period;
 
             Name = _tle.Name;
             Style = StyleProvider.DefaultVectorStyle();
-
+            
             GenerateTrace();
             GenerateFootprintBoundry();
-
             UpdateMemoryProvider();
         }
 
@@ -173,15 +180,25 @@ namespace DZZMan.ViewModels.Models
         /// </summary>
         private void GenerateTrace()
         {
-            _traceStartPoint = DateTime.Now - (Period / 2);
-            _traceEndPoint = DateTime.Now + (Period / 2);
-
             var trace = new List<List<Coordinate>>()
             {
-                new List<Coordinate>()
+                new()
             };
 
-            var timeDelta = Period / Density;
+            var traceTime = _traceEndPoint - _traceStartPoint;
+            var timeDelta = default(TimeSpan);
+            
+            var periodCount = traceTime / Period;
+            if (periodCount > 2)
+            {
+                timeDelta = (traceTime / periodCount) / Density;
+            }
+            else
+            {
+                timeDelta = traceTime / Density;
+            }
+
+            var iterCount = traceTime / timeDelta;
 
             var i = _traceStartPoint;
             var traceSegmentsIter = 0;
@@ -190,12 +207,29 @@ namespace DZZMan.ViewModels.Models
             var prevPoint = _sgp.FindPosition(i).ToGeodetic();
             i += timeDelta;
 
-            for (int ii = 1; ii < Density; i += timeDelta, ii++)
+            for (int ii = 1; ii < iterCount; i += timeDelta, ii++)
             {
                 var geodeticCoordinate = _sgp.FindPosition(i).ToGeodetic();
 
                 if (prevPoint.Longitude.Degrees * geodeticCoordinate.Longitude.Degrees < 0 && (prevPoint.Longitude > 90 || geodeticCoordinate.Longitude > 90))
                 {
+                    // // Обрабатываем разрыв трассы.
+                    // // 
+                    // // Вычисление примерного положения граничащей точки
+                    // var borderDist = geodeticCoordinate.Longitude.Degrees > 0
+                    //     ? 180 - geodeticCoordinate.Longitude.Degrees
+                    //     : -180 - geodeticCoordinate.Longitude.Degrees;
+                    //
+                    // var avgPointsLongDist = Math.Abs(prevPoint.Longitude.Degrees - geodeticCoordinate.Longitude.Degrees);
+                    // var avgPointsLatDist = Math.Abs(prevPoint.Longitude.Degrees - geodeticCoordinate.Longitude.Degrees);
+                    //
+                    // var latApprox = avgPointsLatDist * (borderDist / avgPointsLongDist);
+                    //
+                    // // Замыкание сегмента с одной стороны
+                    // trace[traceSegmentsIter].Add(SphericalMercator
+                    //     .FromLonLat(geodeticCoordinate.Longitude.Degrees > 0 ? 179.999999 : -179.999999, prevPoint.Latitude.Degrees + latApprox)
+                    //     .ToCoordinate());
+                    
                     trace.Add(new List<Coordinate>());
                     traceSegmentsIter++;
                 }
@@ -212,16 +246,32 @@ namespace DZZMan.ViewModels.Models
             _traceFeature = lineList.ToFeatures();
         }
 
+        enum FootprintType
+        {
+            /// <summary>
+            /// Область видимости спутника находится ближе к экватору и/или центру карты и представляет собой обычный круг
+            /// (в редких случаях сегментрированный на 2 части из-за близости к краю карты)
+            /// </summary>
+            Circular,
+            
+            /// <summary>
+            /// Область видимости находится близко к полюсу, из-за чего область видимости занимает весь полюс
+            /// </summary>
+            Polar
+        }
+
         /// <summary>
         /// Сгенерировать границы видимости спутника
         /// </summary>
         private void GenerateFootprintBoundry()
         {
-            var bound = _sgp.FindPosition(_currentPoint).GetFootprintBoundary(_footprintBoundDensity);
+            var position = _sgp.FindPosition(_currentPoint); 
+            var bound = position.GetFootprintBoundary(_footprintBoundDensity);
 
+            
             var boundSegments = new List<List<Coordinate>>()
             {
-                new List<Coordinate>()
+                new()
             };
 
             var prevPoint = bound.First();
@@ -280,6 +330,7 @@ namespace DZZMan.ViewModels.Models
         /// </summary>
         private void UpdateMemoryProvider()
         {
+            ClearCache();
             var features = new List<IFeature>();
 
             if (_traceFeature is not null)
@@ -289,6 +340,7 @@ namespace DZZMan.ViewModels.Models
                 features.AddRange(_boundFeature);
 
             DataSource = new MemoryProvider(features);
+            DataHasChanged();
         }
     }
 }

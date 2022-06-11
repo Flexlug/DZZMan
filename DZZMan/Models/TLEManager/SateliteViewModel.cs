@@ -1,8 +1,9 @@
 ﻿using SGPdotNET.TLE;
 
 using DZZMan.Models;
+using DZZMan.Models.TLEManager;
 
-namespace DZZMan.ViewModels.Models;
+namespace DZZMan.Models.TLEManager;
 
 public class SateliteViewModel
 {

@@ -1,0 +1,38 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="DZZMan.Views.CapturedAreaCalc"
+        Title="CapturedAreaCalc">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Начальная дата: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <DatePicker Margin="5"/>
+            <TimePicker Margin="5"/>
+        </StackPanel>
+        
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Конечная дата: " HorizontalAlignment="Center" VerticalAlignment="Center"/> 
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <DatePicker Margin="5"/>
+            <TimePicker Margin="5"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Cancel" Margin="5" Width="100"/>
+            <Button Content="OK" Margin="5" Width="100"/>
+        </StackPanel>
+        
+    </Grid>
+</Window>

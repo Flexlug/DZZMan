@@ -41,6 +41,7 @@ namespace DZZMan.ViewModels
         {
             _model = ServiceProvider.Get<SatelliteManagerModel>();
             _satellites = new();
+            Satellites = new(_satellites);
                 
             OkButton = ReactiveCommand.Create<Window>((x) =>
             {
@@ -77,6 +78,6 @@ namespace DZZMan.ViewModels
             }
         }
 
-        public ReactiveCommand<Window, Unit> OkButton { get; set; }
+        public ReactiveCommand<Window, Unit> OkButton { get; }
     }
 }
