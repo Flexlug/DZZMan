@@ -1,6 +1,7 @@
 ﻿using SGPdotNET.TLE;
 
 using DZZMan.Models;
+using DZZMan.Models.MainWindow;
 using DZZMan.Models.TLEManager;
 
 namespace DZZMan.Models.TLEManager;

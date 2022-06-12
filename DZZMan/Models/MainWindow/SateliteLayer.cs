@@ -1,24 +1,17 @@
-﻿using DZZMan.Utils;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DZZMan.Utils;
 using Mapsui;
 using Mapsui.Layers;
-using Mapsui.Nts;
 using Mapsui.Nts.Extensions;
 using Mapsui.Projections;
 using Mapsui.Providers;
 using NetTopologySuite.Geometries;
 using SGPdotNET.Propagation;
 using SGPdotNET.TLE;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DZZMan.Models.TLEManager
+namespace DZZMan.Models.MainWindow
 {
     public class SateliteLayer : Layer
     {

@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalonia="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
+        xmlns:mainWindow="clr-namespace:DZZMan.Models.MainWindow"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DZZMan.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -34,7 +35,7 @@
 			<DataGrid.Columns>
 				<DataGridTemplateColumn Header="*" SortMemberPath="IsChecked">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="model:SateliteLayer">
+						<DataTemplate DataType="mainWindow:SateliteLayer">
 							<CheckBox IsChecked="{Binding Enabled}"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
