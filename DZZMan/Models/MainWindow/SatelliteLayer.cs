@@ -8,13 +8,15 @@ using Mapsui.Nts.Extensions;
 using Mapsui.Projections;
 using Mapsui.Providers;
 using NetTopologySuite.Geometries;
+using SGPdotNET.CoordinateSystem;
 using SGPdotNET.Propagation;
 using SGPdotNET.TLE;
+using Coordinate = NetTopologySuite.Geometries.Coordinate;
 
 namespace DZZMan.Models.MainWindow
 {
-    public class SateliteLayer : Layer
-    {
+    public class SatelliteLayer : Layer
+    {   
         /// <summary>
         /// Timestamp первой точки маршрута спутника
         /// </summary>
@@ -63,22 +65,13 @@ namespace DZZMan.Models.MainWindow
             set
             {
                 _currentPoint = value;
+                GenerateCurrentPoint();
                 GenerateFootprintBoundry();
                 UpdateMemoryProvider();
                 OnPropertyChanged(nameof(CurrentPoint));
             }
         }
         private DateTime _currentPoint;
-
-        /// <summary>
-        /// Период обращения спутника вокруг орбиты
-        /// </summary>
-        public TimeSpan Period { get; set; }
-
-        /// <summary>
-        /// Рассчитанная орбита для спутника
-        /// </summary>
-        public Orbit Orbit { get; set; }
 
         /// <summary>
         /// Плотность точек на маршруте (количество точек на один виток)
@@ -128,113 +121,74 @@ namespace DZZMan.Models.MainWindow
                 UpdateMemoryProvider();
             }
         }
-
         private bool _showFootprint = true;
-
-        /// <summary>
-        /// TLE спутника
-        /// </summary>
-        private Tle _tle;
-
-        /// <summary>
-        /// Элементы орбиты
-        /// </summary>
-        private Sgp4 _sgp;
 
         private IEnumerable<IFeature> _boundFeature = null;
         private IEnumerable<IFeature> _traceFeature = null;
+        private IFeature _positionFeature = null;
+
+        private SatelliteWrapper _satellite;
 
         /// <summary>
         /// Создать слой на основе TLE
         /// </summary>
         /// <param name="tle">TLE спутника</param>
         /// <returns></returns>
-        public SateliteLayer(Tle tle)
+        public SatelliteLayer(SatelliteWrapper satellite)
         {
-            _tle = tle;
-            _sgp = new Sgp4(_tle);
-            
-            Period = TimeSpan.FromMinutes(_sgp.Orbit.Period);
-
-            _currentPoint = DateTime.Now;
-            _traceStartPoint = _currentPoint - Period;
-            _traceEndPoint = _currentPoint + Period;
-
-            Name = _tle.Name;
+            Name = satellite.Name;
             Style = StyleProvider.DefaultVectorStyle();
             
+            _satellite = satellite;
+
+            _currentPoint = DateTime.Now.ToLocalTime();
+            _traceStartPoint = _currentPoint - _satellite.Period;
+            _traceEndPoint = _currentPoint + _satellite.Period;
+            
             GenerateTrace();
+            GenerateCurrentPoint();
             GenerateFootprintBoundry();
             UpdateMemoryProvider();
         }
-
         /// <summary>
         /// Сгенерировать маршрут спутника
         /// </summary>
         private void GenerateTrace()
         {
-            var trace = new List<List<Coordinate>>()
+            var visibleTrace = new List<List<Coordinate>>()
             {
                 new()
             };
 
-            var traceTime = _traceEndPoint - _traceStartPoint;
-            var timeDelta = default(TimeSpan);
-            
-            var periodCount = traceTime / Period;
-            if (periodCount > 2)
-            {
-                timeDelta = (traceTime / periodCount) / Density;
-            }
-            else
-            {
-                timeDelta = traceTime / Density;
-            }
+            var trace = SatelliteMath.CalculateTrace(
+                _satellite.Tle,
+                _traceStartPoint,
+                _traceEndPoint,
+                _density);
 
-            var iterCount = traceTime / timeDelta;
-
-            var i = _traceStartPoint;
+            var prevPoint = trace[0];
             var traceSegmentsIter = 0;
 
-            // Просчитаем первую точку, чтобы в цикле работало сравнение с предыдущей
-            var prevPoint = _sgp.FindPosition(i).ToGeodetic();
-            i += timeDelta;
-
-            for (int ii = 1; ii < iterCount; i += timeDelta, ii++)
+            for (int i = 1; i < trace.Count; i++)
             {
-                var geodeticCoordinate = _sgp.FindPosition(i).ToGeodetic();
-
-                if (prevPoint.Longitude.Degrees * geodeticCoordinate.Longitude.Degrees < 0 && (prevPoint.Longitude > 90 || geodeticCoordinate.Longitude > 90))
+                var currentPoint = trace[i];
+                
+                if (prevPoint.Longitude.Degrees * currentPoint.Longitude.Degrees < 0 && (prevPoint.Longitude > 90 || currentPoint.Longitude > 90))
                 {
-                    // // Обрабатываем разрыв трассы.
-                    // // 
-                    // // Вычисление примерного положения граничащей точки
-                    // var borderDist = geodeticCoordinate.Longitude.Degrees > 0
-                    //     ? 180 - geodeticCoordinate.Longitude.Degrees
-                    //     : -180 - geodeticCoordinate.Longitude.Degrees;
-                    //
-                    // var avgPointsLongDist = Math.Abs(prevPoint.Longitude.Degrees - geodeticCoordinate.Longitude.Degrees);
-                    // var avgPointsLatDist = Math.Abs(prevPoint.Longitude.Degrees - geodeticCoordinate.Longitude.Degrees);
-                    //
-                    // var latApprox = avgPointsLatDist * (borderDist / avgPointsLongDist);
-                    //
-                    // // Замыкание сегмента с одной стороны
-                    // trace[traceSegmentsIter].Add(SphericalMercator
-                    //     .FromLonLat(geodeticCoordinate.Longitude.Degrees > 0 ? 179.999999 : -179.999999, prevPoint.Latitude.Degrees + latApprox)
-                    //     .ToCoordinate());
-                    
-                    trace.Add(new List<Coordinate>());
+                    visibleTrace.Add(new List<Coordinate>());
                     traceSegmentsIter++;
                 }
 
-                trace[traceSegmentsIter].Add(SphericalMercator
-                    .FromLonLat(geodeticCoordinate.Longitude.Degrees, geodeticCoordinate.Latitude.Degrees)
-                    .ToCoordinate());
-
-                prevPoint = geodeticCoordinate;
+                var coordinate = SphericalMercator
+                    .FromLonLat(currentPoint.Longitude.Degrees, currentPoint.Latitude.Degrees)
+                    .ToCoordinate();
+                
+                visibleTrace[traceSegmentsIter].Add(coordinate);
+                
+                prevPoint = currentPoint;
             }
-
-            var lineList = trace.Select(x => new LineString(x.ToArray())).ToList();
+            
+            var lineList = visibleTrace.Select(x => new LineString(x.ToArray())).ToList();
 
             _traceFeature = lineList.ToFeatures();
         }
@@ -258,14 +212,12 @@ namespace DZZMan.Models.MainWindow
         /// </summary>
         private void GenerateFootprintBoundry()
         {
-            var position = _sgp.FindPosition(_currentPoint); 
-            var bound = position.GetFootprintBoundary(_footprintBoundDensity);
-
-            
             var boundSegments = new List<List<Coordinate>>()
             {
                 new()
             };
+
+            var bound = SatelliteMath.CalculateFoorptintBounds(_satellite.Tle, _currentPoint, _density);
 
             var prevPoint = bound.First();
             var segmentIter = 0;
@@ -319,6 +271,23 @@ namespace DZZMan.Models.MainWindow
         }
 
         /// <summary>
+        /// Создать на слое точку, которая обозначает положение спутника в данный момент
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private void GenerateCurrentPoint()
+        {
+            var currPoint = SatelliteMath.GetSatellitePosition(_satellite.Tle, _currentPoint);
+            
+            var coord = SphericalMercator
+                .FromLonLat(currPoint.Longitude.Degrees, currPoint.Latitude.Degrees)
+                .ToCoordinate();
+
+            _positionFeature = new PointFeature(coord.X, coord.Y);
+            _positionFeature.Styles.Add(StyleProvider.SatellitePointStyle());
+        }
+
+
+        /// <summary>
         /// Обновить features слоя. Следует вызывать после генерации 
         /// </summary>
         private void UpdateMemoryProvider()
@@ -331,6 +300,9 @@ namespace DZZMan.Models.MainWindow
 
             if (_showFootprint && _boundFeature is not null)
                 features.AddRange(_boundFeature);
+            
+            if (_positionFeature is not null)
+                features.Add(_positionFeature);
 
             DataSource = new MemoryProvider(features);
             DataHasChanged();

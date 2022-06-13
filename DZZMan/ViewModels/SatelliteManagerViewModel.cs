@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using SGPdotNET.TLE;
 
-using DZZMan.Models.TLEManager;
+using DZZMan.Models.SatelliteManager;
 using ReactiveUI;
 using Avalonia.Controls;
 using DynamicData;
@@ -20,8 +20,8 @@ namespace DZZMan.ViewModels
     {
         private SatelliteManagerModel _model;
         
-        public ReadOnlyObservableCollection<SateliteWrapper> Satellites { get; }
-        private ObservableCollection<SateliteWrapper> _satellites;
+        public ReadOnlyObservableCollection<SatelliteViewModel> Satellites { get; }
+        private ObservableCollection<SatelliteViewModel> _satellites = new();
 
         public bool OnlyDb
         {
@@ -40,11 +40,17 @@ namespace DZZMan.ViewModels
         public SatelliteManagerViewModel()
         {
             _model = ServiceProvider.Get<SatelliteManagerModel>();
-            _satellites = new();
             Satellites = new(_satellites);
                 
             OkButton = ReactiveCommand.Create<Window>((x) =>
             {
+                var selectedSatellites = _satellites
+                    .Where(x => x.IsChecked)
+                    .Select(x => x.SatelliteWrapper)
+                    .ToList();
+                
+                _model.RegisterSatellites(selectedSatellites);
+                
                 x.Close();
             });
 
@@ -66,15 +72,11 @@ namespace DZZMan.ViewModels
 
         private void UpdateSatellitesList()
         {
-            var tles = _model.GetTLEs(OnlyDb);
+            var tles = _model.GetSatellites(OnlyDb);
             _satellites.Clear();
             foreach (var tle in tles)
             {
-                _satellites.Add(new()
-                {
-                    IsChecked = false,
-                    TLE = tle.Value
-                });
+                _satellites.Add(new(tle));
             }
         }
 

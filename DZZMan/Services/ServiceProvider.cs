@@ -1,7 +1,7 @@
 ﻿using System;
 using DZZMan.API;
-using DZZMan.Models.TLEManager;
-using DZZMan.ViewModels;
+using DZZMan.Models.MainWindow;
+using DZZMan.Models.SatelliteManager;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SGPdotNET.TLE;
@@ -18,7 +18,9 @@ public class ServiceProvider
     {
         _services = new ServiceCollection()
             .AddSingleton(new DZZManApi("http://flexlug.ru"))
-            .AddSingleton<SatelliteManagerModel>()
+            .AddSingleton<ISatelliteProvider, SatelliteProvider>()
+            .AddScoped<SatelliteManagerModel>()
+            .AddScoped<MainWindowModel>()
             .BuildServiceProvider();
     }
 
@@ -27,7 +29,9 @@ public class ServiceProvider
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T? Get<T>() => _instance._services.GetService<T>();
+    [return: System.Diagnostics.CodeAnalysis.NotNull]
+    public static T? Get<T>() => _instance._services.GetService<T>() 
+                                 ?? throw new NullReferenceException($"Couldn't get service {typeof(T)}");
 
     public static ServiceProvider Configure()
     {

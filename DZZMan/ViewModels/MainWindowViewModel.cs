@@ -2,20 +2,15 @@ using Avalonia.Controls;
 using DZZMan.Models.MainWindow;
 using DZZMan.Views;
 using Mapsui;
-using Mapsui.Layers;
-using NetTopologySuite.Geometries;
 using ReactiveUI;
-using SGPdotNET.TLE;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Threading.Tasks;
-using BruTile.Wmts.Generated;
-using DZZMan.Models.TLEManager;
+using DZZMan.Services;
+using SatelliteViewModel = DZZMan.Models.MainWindow.SatelliteViewModel;
 
 namespace DZZMan.ViewModels
 {
@@ -27,18 +22,23 @@ namespace DZZMan.ViewModels
         /// <summary>
         /// Список подгруженных спутников
         /// </summary>
-        public ObservableCollection<SateliteLayer> SateliteLayers { get; }
+        public ObservableCollection<SatelliteViewModel> Satellites { get; }
 
         /// <summary>
-        /// Выбранный в DataGrid слой
+        /// Выбранный в DataGrid спутник
         /// </summary>
-        public SateliteLayer SelectedLayer
+        public SatelliteViewModel SelectedSatellite
         {
-            get => _selectedLayer;
-            set => this.RaiseAndSetIfChanged(ref _selectedLayer, value);
+            get => _selectedSatellite;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedSatellite, value);
+                this.RaisePropertyChanged(nameof(SelectedSatelliteHasInfoInDb));
+            }
         }
+        private SatelliteViewModel _selectedSatellite = null;
 
-        private SateliteLayer _selectedLayer = null;
+        public bool SelectedSatelliteHasInfoInDb => SelectedSatellite?.HasInfoInDB ?? false;
 
         private Map _map;
 
@@ -47,9 +47,9 @@ namespace DZZMan.ViewModels
         public MainWindowViewModel(Map map)
         {
             _map = map;
-            _model = new();
+            _model = ServiceProvider.Get<MainWindowModel>();
 
-            SateliteLayers = new();
+            Satellites = new();
 
             OpenSateliteManager = ReactiveCommand.Create<Window>(async (x) => await LoadSateliteManager(x));
 
@@ -68,7 +68,7 @@ namespace DZZMan.ViewModels
 
         private async Task ChangeDateAsync(Window mainWindow, SelectedDate date)
         {
-            if (SelectedLayer is null)
+            if (SelectedSatellite is null)
             {
                 await MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
                     "Ошибка",
@@ -81,16 +81,16 @@ namespace DZZMan.ViewModels
             switch (date)
             {
                 case SelectedDate.Start:
-                    var start = await LoadDateChangerAsync(mainWindow, SelectedLayer.TraceStartPoint);
-                    SelectedLayer.TraceStartPoint = start;
+                    var start = await LoadDateChangerAsync(mainWindow, SelectedSatellite.TraceStartPoint);
+                    SelectedSatellite.TraceStartPoint = start;
                     break;
                 case SelectedDate.Current:
-                    var current = await LoadDateChangerAsync(mainWindow, SelectedLayer.CurrentPoint);
-                    SelectedLayer.CurrentPoint = current;
+                    var current = await LoadDateChangerAsync(mainWindow, SelectedSatellite.CurrentPoint);
+                    SelectedSatellite.CurrentPoint = current;
                     break;
                 case SelectedDate.End:
-                    var end = await LoadDateChangerAsync(mainWindow, SelectedLayer.TraceEndPoint);
-                    SelectedLayer.TraceEndPoint = end;
+                    var end = await LoadDateChangerAsync(mainWindow, SelectedSatellite.TraceEndPoint);
+                    SelectedSatellite.TraceEndPoint = end;
                     break;
                 default:
                     throw new Exception("Unknown enum. Expected SelectedDate");
@@ -118,8 +118,7 @@ namespace DZZMan.ViewModels
                 var date = dateTimeChanger.ViewModel.Date;
                 var time = dateTimeChanger.ViewModel.Time;
 
-                return new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes,
-                    time.Seconds, DateTimeKind.Utc);
+                return new DateTime(date.Ticks + time.Ticks, DateTimeKind.Local);
             }
 
             return changeDate;
@@ -130,28 +129,27 @@ namespace DZZMan.ViewModels
             var tleManager = new TLEManager();
             await tleManager.ShowDialog(mainWindow);
 
-            var tlesResult = tleManager?.ViewModel?.Satellites;
+            var satelliteViewModels = _model.GetAvaliableSatellites();
 
-            if (tlesResult is null)
+            if (satelliteViewModels is null || satelliteViewModels.Count == 0)
             {
                 return;
             }
 
-            SateliteLayer lastSateliteLayer = null;
-            foreach (var tleWrapper in tlesResult.Where(x => x.IsChecked))
+            SatelliteViewModel lastSatelliteLayer = null;
+            foreach (var satelliteVM in satelliteViewModels)
             {
-                var existingLayers = _map.Layers.FindLayer(tleWrapper.TLE.Name);
+                var existingLayers = _map.Layers.FindLayer(satelliteVM.Name);
                 if (existingLayers is null || existingLayers.Count() == 0)
                 {
-                    var sateliteLayer = _model.CreateSateliteLayer(tleWrapper.TLE);
-                    _map.Layers.Add(sateliteLayer);
-                    SateliteLayers.Add(sateliteLayer);
+                    _map.Layers.Add(satelliteVM.Layer);
+                    Satellites.Add(satelliteVM);
 
-                    lastSateliteLayer = sateliteLayer;
+                    lastSatelliteLayer = satelliteVM;
                 }
             }
 
-            SelectedLayer = lastSateliteLayer;
+            SelectedSatellite = lastSatelliteLayer;
         }
 
         public delegate void MapChanged();

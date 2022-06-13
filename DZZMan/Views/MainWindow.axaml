@@ -1,10 +1,11 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:DZZMan.ViewModels"
-		xmlns:model="using:DZZMan.Models.TLEManager"
+		xmlns:model="using:DZZMan.Models.SatelliteManager"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalonia="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:mainWindow="clr-namespace:DZZMan.Models.MainWindow"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DZZMan.Views.MainWindow"
@@ -25,17 +26,17 @@
 
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<MenuItem x:Name="LoadSatelites" Header="Добавить спутники" Command="{Binding OpenSateliteManager}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-			<MenuItem x:Name="CalculateSpace" Header="Рассчитать область"/>
-			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки"/>
+			<MenuItem x:Name="CalculateSpace" Header="Рассчитать область" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
+			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
 		</Menu>
 		
 		<avalonia:MapControl x:Name="MapControl" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 
-		<DataGrid x:Name="SatelliteList" Items="{Binding SateliteLayers}" SelectedItem="{Binding SelectedLayer, Mode=TwoWay}" Grid.Row="1" Grid.Column="1">
+		<DataGrid x:Name="SatelliteList" Items="{Binding Satellites}" SelectedItem="{Binding SelectedSatellite, Mode=TwoWay}" Grid.Row="1" Grid.Column="1">
 			<DataGrid.Columns>
 				<DataGridTemplateColumn Header="*" SortMemberPath="IsChecked">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="mainWindow:SateliteLayer">
+						<DataTemplate DataType="mainWindow:SatelliteViewModel">
 							<CheckBox IsChecked="{Binding Enabled}"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
@@ -57,41 +58,31 @@
 			</Grid.RowDefinitions>
 
 			<Button Grid.Column="0" Grid.Row="0" Command="{Binding ChangeStartDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
-			<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedLayer}">
+			<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedSatellite}">
 				<TextBlock>Начало:</TextBlock>
 				<TextBlock Text="{Binding TraceStartPoint}"/>
 			</StackPanel>
 			
 			<Button Grid.Column="0" Grid.Row="1" Command="{Binding ChangeEndDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
-			<StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedLayer}">
-				<TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">Конец:</TextBlock>
-				<TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Text="{Binding TraceEndPoint}"/>
+			<StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedSatellite}">
+				<TextBlock VerticalAlignment="Center">Конец:</TextBlock>
+				<TextBlock VerticalAlignment="Center" Text="{Binding TraceEndPoint}"/>
 			</StackPanel>
 			
 			<Button Grid.Column="0" Grid.Row="2" Command="{Binding ChangeCurrentDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
-			<StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedLayer}">
-				<TextBlock Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">Сейчас:</TextBlock>
-				<TextBlock Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Text="{Binding CurrentPoint}"/>
+			<StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedSatellite}">
+				<TextBlock VerticalAlignment="Center">Сейчас:</TextBlock>
+				<TextBlock VerticalAlignment="Center" Text="{Binding CurrentPoint}"/>
 			</StackPanel>
 		</Grid>
 		
-		<Grid Grid.Row="2" Grid.Column="0" DataContext="{Binding SelectedLayer}">
-			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition/>
-				<RowDefinition/>
-			</Grid.RowDefinitions>
-			
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="3*"/>
-			</Grid.ColumnDefinitions>
-			
-			<TextBlock Grid.Row="0" Grid.Column="0">Название: </TextBlock>
-			<TextBlock Grid.Row="1" Grid.Column="0">Средняя аномалия: </TextBlock>
-			
-			<TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
-			<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Orbit.MenaAnomaly}"/>
+		<Grid Grid.Row="2" Grid.Column="0" DataContext="{Binding SelectedSatellite}">
+			<DataGrid Items="{Binding OrbitInfo}">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Поле: " Binding="{Binding Key}"/>
+					<DataGridTextColumn Header="Значение: " Binding="{Binding Value}"/>
+				</DataGrid.Columns>
+			</DataGrid>
 		</Grid>
 	</Grid>
 </Window>
