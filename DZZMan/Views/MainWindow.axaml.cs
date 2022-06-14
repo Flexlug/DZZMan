@@ -3,6 +3,7 @@ using Avalonia.ReactiveUI;
 using DZZMan.ViewModels;
 using Mapsui;
 using Mapsui.Tiling;
+using Mapsui.UI.Avalonia;
 using ReactiveUI;
 
 namespace DZZMan.Views

@@ -89,7 +89,7 @@ namespace DZZMan.Models.MainWindow
                 UpdateMemoryProvider();
             }
         }
-        private int _density = 200;
+        private int _density = SatelliteMath.DEFAULT_TRACE_DENSITY;
 
         /// <summary>
         /// Плотность точек при отображении области видимости
@@ -107,7 +107,7 @@ namespace DZZMan.Models.MainWindow
                 UpdateMemoryProvider();
             }
         }
-        private int _footprintBoundDensity = 120;
+        private int _footprintBoundDensity = SatelliteMath.DEFAULT_FOOTPRINT_DINSITY;
 
         public bool ShowFootprint
         {
@@ -160,7 +160,7 @@ namespace DZZMan.Models.MainWindow
                 new()
             };
 
-            var trace = SatelliteMath.CalculateTrace(
+            var trace = SatelliteMath.CalculateTraceGeod(
                 _satellite.Tle,
                 _traceStartPoint,
                 _traceEndPoint,

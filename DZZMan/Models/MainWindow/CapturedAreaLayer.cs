@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
+using DZZMan.Models.CapturedAreaCalc;
+using DZZMan.Utils;
 using Mapsui;
 using Mapsui.Layers;
+using Mapsui.Nts.Extensions;
 using Mapsui.Providers;
 using ReactiveUI;
 using SGPdotNET.CoordinateSystem;
@@ -41,23 +46,24 @@ public class CapturedAreaLayer : Layer
 
     private IEnumerable<IFeature> _footprintFeature = null;
     
-    private Tle _tle;
-    private Sgp4 _sgp;
-    private List<GeodeticCoordinate> _traceGeodeticCoordinates;
-    private List<Coordinate> _traceCoordinates;
-    private Satellite _satellite;
+    private SatelliteWrapper _satellite;
+    private CapturedAreaTask _task;
 
-    public CapturedAreaLayer(SatelliteLayer layer, Satellite satellite, DateTime areaStart, DateTime areaEnd)
+    public CapturedAreaLayer(CapturedAreaTask task, SatelliteWrapper satellite)
     {
-        _areaStartPoint = areaStart;
-        _areaEndPoint = areaEnd;
-
+        _areaStartPoint = task.StartDate;
+        _areaEndPoint = task.EndDate;
+        _satellite = satellite;
+        _task = task;
+        
+        Name = $"{satellite.Name}={task.Name}";
+        
         CountCapturedAreaFootprint();
     }
 
     private void CountCapturedAreaFootprint()
     {
-        switch (_satellite.Sensor.SensorType)
+        switch (_satellite.Satellite.Sensor.SensorType)
         {
             case SensorType.Scanner:
                 CountCaptureadAreaForScanner();
@@ -77,7 +83,16 @@ public class CapturedAreaLayer : Layer
 
     private void CountCaptureadAreaForScanner()
     {
-        
+        var result = SatelliteMath.CalculateCapturedAreaForScanner(
+            _satellite.Tle, 
+            _satellite.Satellite, 
+            _task.StartDate, 
+            _task.EndDate, 
+            _task.SkipDark);
+
+        _footprintFeature = result
+            .Select(x => x.ToFeature())
+            .ToList();
     }
 
 

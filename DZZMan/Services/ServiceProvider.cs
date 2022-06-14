@@ -1,5 +1,6 @@
 ﻿using System;
 using DZZMan.API;
+using DZZMan.Models.CapturedAreaCalc;
 using DZZMan.Models.MainWindow;
 using DZZMan.Models.SatelliteManager;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,9 @@ public class ServiceProvider
         _services = new ServiceCollection()
             .AddSingleton(new DZZManApi("http://flexlug.ru"))
             .AddSingleton<ISatelliteProvider, SatelliteProvider>()
+            .AddSingleton<ICapturedAreaTasksProvider, CapturedAreaTaskProvider>()
             .AddScoped<SatelliteManagerModel>()
+            .AddScoped<CapturedAreaCalcModel>()
             .AddScoped<MainWindowModel>()
             .BuildServiceProvider();
     }

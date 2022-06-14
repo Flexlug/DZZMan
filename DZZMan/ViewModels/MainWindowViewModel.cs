@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
+using Avalonia.Rendering;
 using DZZMan.Services;
 using SatelliteViewModel = DZZMan.Models.MainWindow.SatelliteViewModel;
 
@@ -23,6 +24,8 @@ namespace DZZMan.ViewModels
         /// —писок подгруженных спутников
         /// </summary>
         public ObservableCollection<SatelliteViewModel> Satellites { get; }
+
+        public ObservableCollection<CapturedAreaViewModel> CapturedAreas { get; }
 
         /// <summary>
         /// ¬ыбранный в DataGrid спутник
@@ -39,6 +42,22 @@ namespace DZZMan.ViewModels
         private SatelliteViewModel _selectedSatellite = null;
 
         public bool SelectedSatelliteHasInfoInDb => SelectedSatellite?.HasInfoInDB ?? false;
+        
+        /// <summary>
+        /// ¬ыбранна€ отсн€та€ область
+        /// </summary>
+        public CapturedAreaViewModel SelectedCapturedArea
+        {
+            get => _selectedCapturedArea;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedCapturedArea, value);
+                this.RaisePropertyChanged(nameof(SelectedCapturedArea));
+            }
+        }
+        private CapturedAreaViewModel _selectedCapturedArea;
+
+        public bool AnyCapturedAreaExists => CapturedAreas.Count > 0;
 
         private Map _map;
 
@@ -50,20 +69,41 @@ namespace DZZMan.ViewModels
             _model = ServiceProvider.Get<MainWindowModel>();
 
             Satellites = new();
+            CapturedAreas = new();
 
             OpenSateliteManager = ReactiveCommand.Create<Window>(async (x) => await LoadSateliteManager(x));
+            OpenCapturedAreaCalc = ReactiveCommand.Create<Window>(async (x) => await LoadCapturedAreaCalc(x));
 
             ChangeStartDate = ReactiveCommand.Create<Window>(async (x) => await ChangeDateAsync(x, SelectedDate.Start));
-            ChangeCurrentDate = ReactiveCommand.Create<Window>(async (x) => await ChangeDateAsync(x, SelectedDate.Current));
+            ChangeCurrentDate =
+                ReactiveCommand.Create<Window>(async (x) => await ChangeDateAsync(x, SelectedDate.Current));
             ChangeEndDate = ReactiveCommand.Create<Window>(async (x) => await ChangeDateAsync(x, SelectedDate.End));
         }
+
 
         /// <summary>
         /// ќткрыть окно дл€ добавлени€/удалени€ доступных TLE
         /// </summary>
         public ReactiveCommand<Window, Unit> OpenSateliteManager { get; }
+
+        /// <summary>
+        /// ќткрыть окно дл€ составлени€ запроса на расчет 
+        /// </summary>
+        public ReactiveCommand<Window, Unit> OpenCapturedAreaCalc { get; }
+
+        /// <summary>
+        /// »зменить дату, с которой должен начинатьс€ рассчет трассы
+        /// </summary>
         public ReactiveCommand<Window, Unit> ChangeStartDate { get; }
+
+        /// <summary>
+        /// »зменить дату, на которую должна отображатьс€ позици€ спутника
+        /// </summary>
         public ReactiveCommand<Window, Unit> ChangeCurrentDate { get; }
+
+        /// <summary>
+        /// »зменить дату, до которой должен идти расчет трассы
+        /// </summary>
         public ReactiveCommand<Window, Unit> ChangeEndDate { get; }
 
         private async Task ChangeDateAsync(Window mainWindow, SelectedDate date)
@@ -105,7 +145,7 @@ namespace DZZMan.ViewModels
             Current,
             End
         }
-        
+
         private async Task<DateTime> LoadDateChangerAsync(Window mainWindow, DateTime changeDate)
         {
             var dateTimeChanger = new DateChanger(changeDate);
@@ -152,8 +192,26 @@ namespace DZZMan.ViewModels
             SelectedSatellite = lastSatelliteLayer;
         }
 
+        private async Task LoadCapturedAreaCalc(Window window)
+        {
+            var capturedAreaCalc = new CapturedAreaCalc();
+            await capturedAreaCalc.ShowDialog(window);
+
+            var capturedAreaTask = _model.GetCapturedAreaViewModel(SelectedSatellite.SCN);
+
+            if (capturedAreaTask is null)
+                return;
+
+            var existingLayers = _map.Layers.FindLayer(capturedAreaTask.Name);
+            if (existingLayers is null || existingLayers.Count() == 0)
+            {
+                _map.Layers.Add(capturedAreaTask.Layer);
+                CapturedAreas.Add(capturedAreaTask);
+            }
+        }
+
         public delegate void MapChanged();
-        
+
         /// <summary>
         /// —рабатывает при обновлении слоев
         /// </summary>

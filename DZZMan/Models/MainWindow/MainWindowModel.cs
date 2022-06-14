@@ -12,6 +12,7 @@ namespace DZZMan.Models.MainWindow
     public class MainWindowModel
     {
         private ISatelliteProvider _satelliteProvider;
+        private ICapturedAreaTasksProvider _capturedAreaTasksProvider;
         
         public MainWindowModel(ISatelliteProvider satelliteProvider)
         {
@@ -29,6 +30,19 @@ namespace DZZMan.Models.MainWindow
             }
 
             return satelliteVMs;
+        }
+
+        public CapturedAreaViewModel GetCapturedAreaViewModel(int satelliteSCN)
+        {
+            var task = _capturedAreaTasksProvider.GetTask();
+            var satellite = _satelliteProvider.GetSatelliteBySCN(satelliteSCN);
+            
+            if (task is null)
+            {
+                return null;
+            }
+            
+            return new CapturedAreaViewModel(task, satellite);
         }
     }
 }

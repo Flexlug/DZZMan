@@ -11,6 +11,47 @@
         x:Class="DZZMan.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="DZZMan">
+	
+	<Window.Styles>
+		<Style Selector="TabControl">
+			<Setter Property="Background" Value="#F0F0F0"/>
+		</Style>
+		<Style Selector="TabControl WrapPanel">
+			<Setter Property="Background" Value="#2B579A"/>
+		</Style>
+
+		<Style Selector="TabItem">
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Height" Value="25"/>
+			<Setter Property="MinHeight" Value="0"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="Background" Value="#2B579A"/>
+			<Setter Property="Foreground" Value="#F0F0F0"/>
+			<Setter Property="Margin" Value="0 0 0 0"/>
+			<Setter Property="Padding" Value="10 0"/>
+		</Style>
+		<Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="#124078"/>
+		</Style>
+
+		<Style Selector="TabItem:focus">
+			<Setter Property="Foreground" Value="#2B579A"/>
+			<Setter Property="Margin" Value="0 0 0 0"/>
+			<Setter Property="Padding" Value="10 0"/>
+		</Style>
+		<Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="#f0f0f0"/>
+		</Style>
+
+		<Style Selector="TabItem:selected">
+			<Setter Property="Foreground" Value="#2B579A"/>
+			<Setter Property="Margin" Value="0 0 0 0"/>
+			<Setter Property="Padding" Value="10 0"/>
+		</Style>
+		<Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="#f0f0f0"/>
+		</Style>
+	</Window.Styles>
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -76,13 +117,35 @@
 			</StackPanel>
 		</Grid>
 		
-		<Grid Grid.Row="2" Grid.Column="0" DataContext="{Binding SelectedSatellite}">
-			<DataGrid Items="{Binding OrbitInfo}">
-				<DataGrid.Columns>
-					<DataGridTextColumn Header="Поле: " Binding="{Binding Key}"/>
-					<DataGridTextColumn Header="Значение: " Binding="{Binding Value}"/>
-				</DataGrid.Columns>
-			</DataGrid>
-		</Grid>
+		<TabControl Grid.Row="2" Grid.Column="0">
+			<TabItem Header="Орбита">
+				<DockPanel DataContext="{Binding SelectedSatellite}">
+					<DataGrid Items="{Binding OrbitInfo}">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Поле" Binding="{Binding Key}"/>
+							<DataGridTextColumn Header="Значение" Binding="{Binding Value}"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</TabItem>
+			<TabItem Header="Планирование" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}">
+				<DockPanel>
+					<DataGrid Items="{Binding CapturedAreas}">
+						<DataGrid.Columns>
+							<DataGridTemplateColumn Header="*" SortMemberPath="IsChecked">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate DataType="mainWindow:CapturedAreaViewModel">
+										<CheckBox IsChecked="{Binding Enabled}"/>
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+							<DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+							<DataGridTextColumn Header="Начало съемки" Binding="{Binding AreaStartPoint}"/>
+							<DataGridTextColumn Header="Конец съемки" Binding="{Binding AreaEndPoint}"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</TabItem>
+		</TabControl>
 	</Grid>
 </Window>
