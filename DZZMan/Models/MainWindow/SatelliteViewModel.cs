@@ -55,6 +55,7 @@ public class SatelliteViewModel : INotifyPropertyChanged
     public string Name { get; }
     public int SCN { get; set; }
     public bool HasInfoInDB { get; }
+    public bool HasImageSources { get; }
     public Dictionary<string, string> OrbitInfo { get; }
     public SatelliteLayer Layer { get; }
 
@@ -62,6 +63,7 @@ public class SatelliteViewModel : INotifyPropertyChanged
     {
         Name = satellite.Tle.Name;
         HasInfoInDB = satellite.HasSatelliteInfo;
+        HasImageSources = satellite.HasImageSources;
         OrbitInfo = satellite.GetOrbitParameters();
         SCN = satellite.SCN;
         Layer = new SatelliteLayer(satellite);

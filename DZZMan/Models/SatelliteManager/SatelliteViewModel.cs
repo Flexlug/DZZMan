@@ -25,6 +25,16 @@ public class SatelliteViewModel
     public bool IsChecked { get; set; }
     
     /// <summary>
+    /// Отметка о наличии в БД информации о сенсоре спутника
+    /// </summary>
+    public bool HasSensorInfo { get; set; }
+    
+    /// <summary>
+    /// Отметка о наличи в БД источников изображений
+    /// </summary>
+    public bool HasImageSources { get; set; }
+    
+    /// <summary>
     /// Информация о спутнике
     /// </summary>
     public SatelliteWrapper SatelliteWrapper { get; set; }
@@ -35,6 +45,9 @@ public class SatelliteViewModel
 
         Name = SatelliteWrapper.Tle.Name;
         SCN = satelliteWrapper.Tle.NoradNumber.ToString();
+        HasSensorInfo = satelliteWrapper.HasSatelliteInfo;
+        HasImageSources = satelliteWrapper.HasImageSources;
+        
         IsChecked = false;
     }
 }

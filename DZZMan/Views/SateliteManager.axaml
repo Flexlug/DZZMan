@@ -50,8 +50,22 @@
 									</DataTemplate>
 								</DataGridTemplateColumn.CellTemplate>
 							</DataGridTemplateColumn>
-							<DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
-							<DataGridTextColumn Header="Идентификатор NORAD" Binding="{Binding SCN}"/>
+							<DataGridTextColumn Header="Название" Binding="{Binding Name}" SortMemberPath="Name"/>
+							<DataGridTextColumn Header="Идентификатор NORAD" Binding="{Binding SCN}" SortMemberPath="SCN"/>
+							<DataGridTemplateColumn Header="Сенсор" SortMemberPath="HasSensorInfo">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate DataType="model:SatelliteViewModel">
+										<CheckBox IsChecked="{Binding HasSensorInfo}" IsEnabled="False" HorizontalAlignment="Center"/>
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+							<DataGridTemplateColumn Header="Источники снимков" SortMemberPath="HasImageSources">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate DataType="model:SatelliteViewModel">
+										<CheckBox IsChecked="{Binding HasImageSources}" IsEnabled="False" HorizontalAlignment="Center"/>
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
 						</DataGrid.Columns>
 					</DataGrid>
 					

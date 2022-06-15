@@ -49,7 +49,7 @@
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<MenuItem x:Name="LoadSatelites" Header="Добавить спутники" Command="{Binding OpenSateliteManager}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
 			<MenuItem x:Name="CalculateSpace" Header="Рассчитать область" Command="{Binding OpenCapturedAreaCalc}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
-			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
+			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки" IsEnabled="{Binding SelectedSatelliteHasImageSources, Mode=OneWay}"/>
 		</Menu>
 		
 		<avalonia:MapControl x:Name="MapControl" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>

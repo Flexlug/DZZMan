@@ -222,7 +222,7 @@ namespace DZZMan.AdminClient
                         Length = length
                     }
                 },
-                ImageSources = Sources.Count == 0 ? null : Sources.ToList()
+                ImageSources = Sources.Count == 0 ? new() : Sources.ToList()
             };
 
             Result = true;

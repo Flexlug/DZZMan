@@ -35,6 +35,11 @@ namespace DZZMan.Models
         public bool HasSatelliteInfo { get; set; }
         
         /// <summary>
+        /// Обозначает, есть ли в БД информация об источниках скачивания
+        /// </summary>
+        public bool HasImageSources { get; set; }
+        
+        /// <summary>
         /// Информация о спутнике из БД
         /// </summary>
         public Satellite Satellite { get; set; }
@@ -49,6 +54,7 @@ namespace DZZMan.Models
             Tle = tle;
             SCN = (int)tle.NoradNumber;
             HasSatelliteInfo = false;
+            HasImageSources = false;
             Satellite = null;
         }
 
@@ -58,6 +64,7 @@ namespace DZZMan.Models
             Tle = tle;
             SCN = (int)tle.NoradNumber;
             HasSatelliteInfo = true;
+            HasImageSources = satellite.ImageSources.Count != 0;
             Satellite = satellite;
         }
 

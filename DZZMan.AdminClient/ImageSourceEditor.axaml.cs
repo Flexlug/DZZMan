@@ -37,11 +37,14 @@ public partial class ImageSourceEditor : Window
 
         var selectedIndex = int.MinValue;
         
-        if (Source is USGSEESource)
+        if (Source is USGSSource)
             selectedIndex = 0;
+        
+        if (Source is USGSEESource)
+            selectedIndex = 1;
 
         if (Source is CopernicusSource)
-            selectedIndex = 1;
+            selectedIndex = 2;
 
         ImageSourceType.SelectedIndex = selectedIndex;
 
@@ -94,13 +97,20 @@ public partial class ImageSourceEditor : Window
         switch (ImageSourceType.SelectedIndex)
         {
             case 0:
-                Source = new USGSEESource()
+                Source = new USGSSource()
                 {
                     DownloadParametes = Parameters
                 };
                 break;
             
             case 1:
+                Source = new USGSEESource()
+                {
+                    DownloadParametes = Parameters
+                };
+                break;
+            
+            case 2:
                 Source = new CopernicusSource()
                 {
                     DownloadParametes = Parameters

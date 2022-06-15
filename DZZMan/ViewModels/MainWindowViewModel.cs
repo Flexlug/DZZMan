@@ -37,11 +37,14 @@ namespace DZZMan.ViewModels
             {
                 this.RaiseAndSetIfChanged(ref _selectedSatellite, value);
                 this.RaisePropertyChanged(nameof(SelectedSatelliteHasInfoInDb));
+                this.RaisePropertyChanged(nameof(SelectedSatelliteHasImageSources));
             }
         }
         private SatelliteViewModel _selectedSatellite = null;
 
         public bool SelectedSatelliteHasInfoInDb => SelectedSatellite?.HasInfoInDB ?? false;
+
+        public bool SelectedSatelliteHasImageSources => SelectedSatellite?.HasImageSources ?? false;
         
         /// <summary>
         /// Выбранная отснятая область
