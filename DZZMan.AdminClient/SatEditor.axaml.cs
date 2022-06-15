@@ -64,6 +64,16 @@ namespace DZZMan.AdminClient
                     LengthTB.Text = frame.Length.ToString();
                     break;
             }
+
+            if (satelite.ImageSources.Count != 0)
+            {
+                ImageSourcesComboBox.SelectedIndex = 1;
+                
+                foreach (var source in satelite.ImageSources)
+                {
+                    Sources.Add(source);
+                }
+            }
         }
 
         private void InitializeComponent()
