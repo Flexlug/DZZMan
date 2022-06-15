@@ -1,10 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using DZZMan.ViewModels;
 
 namespace DZZMan.Views;
 
-public partial class CapturedAreaCalc : Window
+public partial class CapturedAreaCalc : ReactiveWindow<CapturedAreaCalcViewModel>
 {
     public CapturedAreaCalc()
     {
@@ -12,6 +14,9 @@ public partial class CapturedAreaCalc : Window
 #if DEBUG
         this.AttachDevTools();
 #endif
+
+        var viewModel = new CapturedAreaCalcViewModel();
+        ViewModel = viewModel;
     }
 
     private void InitializeComponent()

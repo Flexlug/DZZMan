@@ -137,7 +137,7 @@ namespace DZZMan.Models.MainWindow
         public SatelliteLayer(SatelliteWrapper satellite)
         {
             Name = satellite.Name;
-            Style = StyleProvider.DefaultVectorStyle();
+            Style = StyleProvider.DefaultSatelliteLayerStyle();
             
             _satellite = satellite;
 
@@ -283,7 +283,7 @@ namespace DZZMan.Models.MainWindow
                 .ToCoordinate();
 
             _positionFeature = new PointFeature(coord.X, coord.Y);
-            _positionFeature.Styles.Add(StyleProvider.SatellitePointStyle());
+            _positionFeature.Styles.Add(StyleProvider.DefaultSatellitePointStyle());
         }
 
 

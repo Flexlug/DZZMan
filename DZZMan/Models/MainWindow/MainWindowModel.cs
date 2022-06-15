@@ -14,9 +14,10 @@ namespace DZZMan.Models.MainWindow
         private ISatelliteProvider _satelliteProvider;
         private ICapturedAreaTasksProvider _capturedAreaTasksProvider;
         
-        public MainWindowModel(ISatelliteProvider satelliteProvider)
+        public MainWindowModel(ISatelliteProvider satelliteProvider, ICapturedAreaTasksProvider capturedAreaTasksProvider)
         {
             _satelliteProvider = satelliteProvider;
+            _capturedAreaTasksProvider = capturedAreaTasksProvider;
         }
 
         public List<SatelliteViewModel> GetAvaliableSatellites()

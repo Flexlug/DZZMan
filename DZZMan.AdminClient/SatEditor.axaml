@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DZZMan.AdminClient.SatEditor"
         Title="SatEditor">
-	<Grid>
+	<Grid Margin="5">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition MinWidth="200" Width="3*"/>
 			<ColumnDefinition MinWidth="300" Width="7*"/>
@@ -16,7 +16,9 @@
 			<RowDefinition Height="40"/>
 			<RowDefinition Height="40"/>
 			<RowDefinition Height="40"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="40"/>
 		</Grid.RowDefinitions>
 
@@ -123,8 +125,37 @@
 			</Grid>
 		</StackPanel>
 
+		<Label Grid.Column="0"
+		       Grid.Row="5"
+		       VerticalAlignment="Center"
+		       Content="Image Sources"/>
+
+		<ComboBox x:Name="ImageSourcesComboBox"
+		          Grid.Row="5"
+		          Grid.Column="1"
+		          SelectionChanged="ImageSourceTypeComboBox_OnSelectionChanged"
+		          SelectedIndex="0"
+		          Margin="5">
+			<ComboBoxItem Content="Нет"/>
+			<ComboBoxItem Content="Есть"/>
+		</ComboBox>
+		
+		<Grid x:Name="ImageSourcesGrid" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="True">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="7*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			
+			<ListBox Height="100"/>
+			
+			<StackPanel Grid.Column="1" Orientation="Vertical">
+				<Button Content="+" Width="50" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="5" Click="AddImageSource_Click"/>
+				<Button Content="-" Width="50" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="5" Click="RemoveImageSource_Click"/>
+			</StackPanel>
+		</Grid>
+		
 		<StackPanel Orientation="Horizontal"
-                    Grid.Row="5"
+                    Grid.Row="7"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     HorizontalAlignment="Right">

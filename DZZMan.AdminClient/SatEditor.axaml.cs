@@ -66,6 +66,8 @@ namespace DZZMan.AdminClient
             SwathTB = this.Find<TextBox>("SwathTB");
             WidthTB = this.Find<TextBox>("WidthTB");
             LengthTB = this.Find<TextBox>("LengthTB");
+
+            ImageSourcesComboBox = this.Find<ComboBox>("ImageSourcesComboBox");
         }
 
         private void SensorType_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -197,6 +199,35 @@ namespace DZZMan.AdminClient
         {
             Result = false;
             Close();
+        }
+
+        private void ImageSourceTypeComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            if (ImageSourcesComboBox is null || ImageSourcesComboBox?.SelectedIndex == -1)
+                return;
+
+            switch (ImageSourcesComboBox?.SelectedIndex)
+            {
+                case 0:
+                    SensorTypeComboBox.SelectedIndex = 0;
+                    ImageSourcesGrid.IsVisible = false;
+                    break;
+                
+                case 1:
+                    SensorTypeComboBox.SelectedIndex = 1;
+                    ImageSourcesGrid.IsVisible = true;
+                    break;
+            }
+        }
+
+        private void AddImageSource_Click(object? sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void RemoveImageSource_Click(object? sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

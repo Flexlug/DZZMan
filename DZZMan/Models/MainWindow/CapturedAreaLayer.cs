@@ -51,12 +51,13 @@ public class CapturedAreaLayer : Layer
 
     public CapturedAreaLayer(CapturedAreaTask task, SatelliteWrapper satellite)
     {
+        Name = $"{satellite.Name}={task.Name}";
+        Style = StyleProvider.DefaultCapturedAreaLayerStyle();
+        
         _areaStartPoint = task.StartDate;
         _areaEndPoint = task.EndDate;
         _satellite = satellite;
         _task = task;
-        
-        Name = $"{satellite.Name}={task.Name}";
         
         CountCapturedAreaFootprint();
     }
@@ -93,6 +94,8 @@ public class CapturedAreaLayer : Layer
         _footprintFeature = result
             .Select(x => x.ToFeature())
             .ToList();
+
+        UpdateMemoryProvider();
     }
 
 

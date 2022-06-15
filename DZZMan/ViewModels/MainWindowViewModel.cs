@@ -158,7 +158,7 @@ namespace DZZMan.ViewModels
                 var date = dateTimeChanger.ViewModel.Date;
                 var time = dateTimeChanger.ViewModel.Time;
 
-                return new DateTime(date.Ticks + time.Ticks, DateTimeKind.Local);
+                return new DateTime(date.Date.Ticks + time.Ticks, DateTimeKind.Local);
             }
 
             return changeDate;

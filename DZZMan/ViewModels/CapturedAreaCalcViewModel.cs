@@ -58,10 +58,10 @@ public class CapturedAreaCalcViewModel : ViewModelBase
 
         Ok = ReactiveCommand.Create<Window>(x =>
         {
-            var startDateTimeSpan = _startDate.Ticks;
+            var startDateTimeSpan = _startDate.Date.Ticks;
             var startTimeSpan = _startTime.Ticks;
 
-            var endDateTimeSpan = _endDate.Ticks;
+            var endDateTimeSpan = _endDate.Date.Ticks;
             var endTimeSpan = _endTime.Ticks;
 
             var startDate = new DateTime(startDateTimeSpan + startTimeSpan, DateTimeKind.Local);
@@ -98,6 +98,6 @@ public class CapturedAreaCalcViewModel : ViewModelBase
         });
     }
 
-    public ReactiveCommand<Window, Unit> Ok;
-    public ReactiveCommand<Window, Unit> Cancel;
+    public ReactiveCommand<Window, Unit> Ok { get; }
+    public ReactiveCommand<Window, Unit> Cancel { get; }
 }

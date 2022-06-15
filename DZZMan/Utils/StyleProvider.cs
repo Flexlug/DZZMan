@@ -11,7 +11,7 @@ namespace DZZMan.Utils
 {
     public static class StyleProvider
     {
-        public static Style DefaultVectorStyle() => new VectorStyle()
+        public static Style DefaultSatelliteLayerStyle() => new VectorStyle()
         {
             Fill = new Brush(Color.FromArgb(50, 255, 0, 0)),
             Outline = new Pen()
@@ -27,9 +27,25 @@ namespace DZZMan.Utils
             }
         };
 
-        public static Style SatellitePointStyle() => new CalloutStyle()
+        public static Style DefaultSatellitePointStyle() => new CalloutStyle()
         {
-            Color = Color.Green
+            Fill = new Brush(Color.Orange)
+        };
+        
+        public static Style DefaultCapturedAreaLayerStyle() => new VectorStyle()
+        {
+            Fill = new Brush(Color.FromArgb(50, 0, 255, 0)),
+            Outline = new Pen()
+            {
+                Color = Color.Black,
+                Width = 0.5
+            },
+            Line = new Pen()
+            {
+                Color = Color.Black,
+                Width = 2,
+                StrokeJoin = StrokeJoin.Round
+            }
         };
     }
 }

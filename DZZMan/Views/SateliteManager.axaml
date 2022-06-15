@@ -7,45 +7,24 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DZZMan.Views.TLEManager"
         Title="TLEManager">
-
 	<Window.Styles>
-		<Style Selector="TabControl">
-			<Setter Property="Background" Value="#F0F0F0"/>
-		</Style>
-		<Style Selector="TabControl WrapPanel">
-			<Setter Property="Background" Value="#2B579A"/>
-		</Style>
-
 		<Style Selector="TabItem">
 			<Setter Property="FontSize" Value="12"/>
 			<Setter Property="Height" Value="25"/>
 			<Setter Property="MinHeight" Value="0"/>
 			<Setter Property="VerticalAlignment" Value="Center"/>
-			<Setter Property="Background" Value="#2B579A"/>
-			<Setter Property="Foreground" Value="#F0F0F0"/>
 			<Setter Property="Margin" Value="0 0 0 0"/>
 			<Setter Property="Padding" Value="10 0"/>
-		</Style>
-		<Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="#124078"/>
 		</Style>
 
 		<Style Selector="TabItem:focus">
-			<Setter Property="Foreground" Value="#2B579A"/>
 			<Setter Property="Margin" Value="0 0 0 0"/>
 			<Setter Property="Padding" Value="10 0"/>
-		</Style>
-		<Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="#f0f0f0"/>
 		</Style>
 
 		<Style Selector="TabItem:selected">
-			<Setter Property="Foreground" Value="#2B579A"/>
 			<Setter Property="Margin" Value="0 0 0 0"/>
 			<Setter Property="Padding" Value="10 0"/>
-		</Style>
-		<Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="#f0f0f0"/>
 		</Style>
 	</Window.Styles>
 
@@ -61,7 +40,7 @@
 					</Grid.RowDefinitions>
 
 					<CheckBox x:Name="DbOnlyCheckbox" IsChecked="{Binding OnlyDb}" Margin="5, 0, 0, 0" Grid.Row="0">Показывать только те спутники, которые есть в БД</CheckBox>
-							  
+							
 					<DataGrid Grid.Row="1" Items="{Binding Satellites}" CanUserSortColumns="True" CanUserResizeColumns="True">
 						<DataGrid.Columns>
 							<DataGridTemplateColumn Header="*" SortMemberPath="IsChecked">
@@ -75,7 +54,7 @@
 							<DataGridTextColumn Header="Идентификатор NORAD" Binding="{Binding SCN}"/>
 						</DataGrid.Columns>
 					</DataGrid>
-
+					
 					<Button Grid.Row="2" HorizontalAlignment="Right" Width="100" Margin="0, 0, 20, 0" Command="{Binding OkButton}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">OK</Button>
 				</Grid>
 			</TabItem>

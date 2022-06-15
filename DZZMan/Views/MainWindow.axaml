@@ -13,43 +13,24 @@
         Title="DZZMan">
 	
 	<Window.Styles>
-		<Style Selector="TabControl">
-			<Setter Property="Background" Value="#F0F0F0"/>
-		</Style>
-		<Style Selector="TabControl WrapPanel">
-			<Setter Property="Background" Value="#2B579A"/>
-		</Style>
 
 		<Style Selector="TabItem">
 			<Setter Property="FontSize" Value="12"/>
 			<Setter Property="Height" Value="25"/>
 			<Setter Property="MinHeight" Value="0"/>
 			<Setter Property="VerticalAlignment" Value="Center"/>
-			<Setter Property="Background" Value="#2B579A"/>
-			<Setter Property="Foreground" Value="#F0F0F0"/>
 			<Setter Property="Margin" Value="0 0 0 0"/>
 			<Setter Property="Padding" Value="10 0"/>
-		</Style>
-		<Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="#124078"/>
 		</Style>
 
 		<Style Selector="TabItem:focus">
-			<Setter Property="Foreground" Value="#2B579A"/>
 			<Setter Property="Margin" Value="0 0 0 0"/>
 			<Setter Property="Padding" Value="10 0"/>
-		</Style>
-		<Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="#f0f0f0"/>
 		</Style>
 
 		<Style Selector="TabItem:selected">
-			<Setter Property="Foreground" Value="#2B579A"/>
 			<Setter Property="Margin" Value="0 0 0 0"/>
 			<Setter Property="Padding" Value="10 0"/>
-		</Style>
-		<Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="#f0f0f0"/>
 		</Style>
 	</Window.Styles>
 
@@ -67,7 +48,7 @@
 
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<MenuItem x:Name="LoadSatelites" Header="Добавить спутники" Command="{Binding OpenSateliteManager}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-			<MenuItem x:Name="CalculateSpace" Header="Рассчитать область" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
+			<MenuItem x:Name="CalculateSpace" Header="Рассчитать область" Command="{Binding OpenCapturedAreaCalc}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
 			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
 		</Menu>
 		
@@ -88,8 +69,8 @@
 		
 		<Grid Grid.Row="2" Grid.Column="1">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="3*"/>
+				<ColumnDefinition Width="45"/>
+				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
 			
 			<Grid.RowDefinitions>
@@ -98,19 +79,19 @@
 				<RowDefinition/>
 			</Grid.RowDefinitions>
 
-			<Button Grid.Column="0" Grid.Row="0" Command="{Binding ChangeStartDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
+			<Button Grid.Column="0" Grid.Row="0" Margin="5, 0, 0, 0" Command="{Binding ChangeStartDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
 			<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedSatellite}">
 				<TextBlock>Начало:</TextBlock>
 				<TextBlock Text="{Binding TraceStartPoint}"/>
 			</StackPanel>
 			
-			<Button Grid.Column="0" Grid.Row="1" Command="{Binding ChangeEndDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
+			<Button Grid.Column="0" Grid.Row="1" Margin="5, 0, 0, 0" Command="{Binding ChangeEndDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
 			<StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedSatellite}">
 				<TextBlock VerticalAlignment="Center">Конец:</TextBlock>
 				<TextBlock VerticalAlignment="Center" Text="{Binding TraceEndPoint}"/>
 			</StackPanel>
 			
-			<Button Grid.Column="0" Grid.Row="2" Command="{Binding ChangeCurrentDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
+			<Button Grid.Column="0" Grid.Row="2" Margin="5, 0, 0, 0" Command="{Binding ChangeCurrentDate}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">Set</Button>
 			<StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Orientation="Vertical" DataContext="{Binding SelectedSatellite}">
 				<TextBlock VerticalAlignment="Center">Сейчас:</TextBlock>
 				<TextBlock VerticalAlignment="Center" Text="{Binding CurrentPoint}"/>

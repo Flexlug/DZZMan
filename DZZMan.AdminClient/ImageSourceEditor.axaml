@@ -1,0 +1,75 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="DZZMan.AdminClient.ImageSourceEditor"
+        Title="ImageSourceEditor">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Image source:"/> 
+        
+        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ImageSourceType">
+            <ComboBoxItem>USGSEE</ComboBoxItem>
+            <ComboBoxItem>SciHub Copernicus</ComboBoxItem>
+        </ComboBox>
+        
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Parameters: "/>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox Grid.Column="0" x:Name="NewParameterNameTB" Margin="5"/>
+            <TextBox Grid.Column="1" x:Name="NewParameterValueTB" Margin="5"/>
+        </Grid>
+        
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--
+            <DataGrid x:Name="ParametersDataGrid" Items="{Binding Parameters}" Height="100">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Ключ" Binding="{Binding Key}"/>
+                    <DataGridTextColumn Header="Значение" Binding="{Binding Value}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            -->
+            
+            <DataGrid x:Name="ParametersGrid" Items="{Binding Parameters}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Ключ" Binding="{Binding Key}"/>
+                    <DataGridTextColumn Header="Значение" Binding="{Binding Value}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <StackPanel Grid.Column="1" Orientation="Vertical">
+                <Button Content="+" Width="50" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="5" Click="Add_OnClick"/>
+                <Button Content="-" Width="50" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="5" Click="Remove_OnClick"/>
+            </StackPanel>
+        </Grid>
+        
+        <StackPanel Grid.Column="1" 
+                    Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Width="100" Margin="5" x:Name="CancelButton" Click="Cancel_OnClick">Отмена</Button>
+            <Button Width="100" Margin="5" x:Name="OKButton" Click="OK_OnClick">OK</Button>
+        </StackPanel>
+    </Grid>
+</Window>

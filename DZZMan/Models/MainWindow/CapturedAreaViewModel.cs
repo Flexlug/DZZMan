@@ -20,10 +20,10 @@ public class CapturedAreaViewModel : INotifyPropertyChanged
 
     public DateTime AreaStartPoint
     {
-        get => Layer.AreaEndPoint;
+        get => Layer.AreaStartPoint;
         set
         {
-            Layer.AreaEndPoint = value;
+            Layer.AreaStartPoint = value;
             OnPropertyChanged(nameof(AreaStartPoint));
         }
     }

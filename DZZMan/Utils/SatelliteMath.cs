@@ -19,18 +19,15 @@ namespace DZZMan.Utils;
 
 public static class SatelliteMath
 {
-    public const int DEFAULT_TRACE_DENSITY = 200;
-    public const int DEFAULT_FOOTPRINT_DINSITY = 120;
+    public const int DEFAULT_TRACE_DENSITY = 400;
+    public const int DEFAULT_FOOTPRINT_DINSITY = 240;
     
     public static List<EciCoordinate> CalculateTraceEci(Tle tle, DateTime startDate, DateTime endDate, 
         int density)
     {
         var sgp = new Sgp4(tle);
-        
-        var trace = new List<EciCoordinate>()
-        {
-            new()
-        };
+
+        var trace = new List<EciCoordinate>();
 
         var traceTime = endDate - startDate;
         var timeDelta = default(TimeSpan);
@@ -101,7 +98,7 @@ public static class SatelliteMath
         EciCoordinate currentPointEci;
         GeodeticCoordinate currentPointGeod;
         
-        var polygonPointSequenses = new List<List<NetTopologySuite.Geometries.Coordinate>>();
+        var polygonPointSequenses = new List<List<NetTopologySuite.Geometries.Coordinate>>() { new() };
         var polygonIterators = 0;
         var isSkiping = false;
         
@@ -131,17 +128,36 @@ public static class SatelliteMath
             
             var currentPoint = SphericalMercator.FromLonLat(currentPointGeod.Longitude.Degrees, currentPointGeod.Latitude.Degrees).ToCoordinate();
 
-            var angle = AngleUtility.Angle(prevPoint, currentPoint);
-
-            var cRight = GeodesyMath.DirectGeodTask(prevPoint, angle + 90, halfDist);
-            var cLeft = GeodesyMath.DirectGeodTask(prevPoint, angle - 90, halfDist);
+            var angleRad = AngleUtility.Angle(prevPoint, currentPoint);
+            var angle = AngleUtility.ToDegrees(angleRad);
             
-            polygonPointSequenses[polygonIterators].Add(cRight);
-            polygonPointSequenses[polygonIterators].Add(cLeft);
+            var cRight = GeodesyMath.DirectGeodTask(prevPoint, angle - 90, halfDist);
+            var cLeft = GeodesyMath.DirectGeodTask(prevPoint, angle + 90, halfDist);
+            
+            if (i > polygonPointSequenses[polygonIterators].Count)
+            {
+                polygonPointSequenses[polygonIterators].Add(cRight);
+                polygonPointSequenses[polygonIterators].Add(cLeft);
+            }
+            else
+            {
+                polygonPointSequenses[polygonIterators].Insert(i, cRight);
+                polygonPointSequenses[polygonIterators].Insert(i, cLeft);
+            }
 
             prevPoint = currentPoint;
         }
 
+        // Отфильтровать пустые полигоны
+        polygonPointSequenses.RemoveAll(x => x.Count == 0);
+        
+        // Замкнуть каждую последовательность из точек
+        foreach (var polygonQequence in polygonPointSequenses)
+        {
+            var firstPoint = polygonQequence.First();
+            polygonQequence.Add(firstPoint);
+        }
+        
         var geometryFactory = new GeometryFactory();
         var polygons = polygonPointSequenses
             .Select(x => x.ToArray())
