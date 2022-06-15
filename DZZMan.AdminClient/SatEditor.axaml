@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:model="clr-namespace:DZZMan.Models.ImageSources;assembly=DZZMan.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DZZMan.AdminClient.SatEditor"
         Title="SatEditor">
@@ -140,13 +141,19 @@
 			<ComboBoxItem Content="Есть"/>
 		</ComboBox>
 		
-		<Grid x:Name="ImageSourcesGrid" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="True">
+		<Grid x:Name="ImageSourcesGrid" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="False">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="7*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			
-			<ListBox Height="100"/>
+			<ListBox x:Name="SourcesList" Height="100" Items="{Binding Sources}">
+				<ListBox.ItemTemplate>
+					<DataTemplate DataType="model:ImageSource">
+						<TextBlock Text="{Binding SourceName}"/>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 			
 			<StackPanel Grid.Column="1" Orientation="Vertical">
 				<Button Content="+" Width="50" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="5" Click="AddImageSource_Click"/>

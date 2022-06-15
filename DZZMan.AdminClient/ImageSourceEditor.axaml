@@ -42,21 +42,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <!--
-            <DataGrid x:Name="ParametersDataGrid" Items="{Binding Parameters}" Height="100">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Ключ" Binding="{Binding Key}"/>
-                    <DataGridTextColumn Header="Значение" Binding="{Binding Value}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            -->
-            
-            <DataGrid x:Name="ParametersGrid" Items="{Binding Parameters}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Ключ" Binding="{Binding Key}"/>
-                    <DataGridTextColumn Header="Значение" Binding="{Binding Value}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <ListBox x:Name="ParametersListBox" Items="{Binding ParametersStrings}"/>
             
             <StackPanel Grid.Column="1" Orientation="Vertical">
                 <Button Content="+" Width="50" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="5" Click="Add_OnClick"/>

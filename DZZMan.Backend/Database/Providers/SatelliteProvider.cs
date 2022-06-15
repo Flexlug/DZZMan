@@ -24,6 +24,7 @@ namespace DZZMan.Backend.Database.Providers
                 var satelitesCosparIds= await session
                     .Query<Satellite>()
                     .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(5)))
+                    .Include(x => x.ImageSources)
                     .ToListAsync();
 
                 return satelitesCosparIds;
@@ -37,6 +38,7 @@ namespace DZZMan.Backend.Database.Providers
             {
                 return await session
                     .Query<Satellite>()
+                    .Include(x => x.ImageSources)
                     .FirstOrDefaultAsync(x => x.Name == name);
             }
         }

@@ -25,10 +25,10 @@ namespace DZZMan.Models
         /// Информация о сенсоре спутника
         /// </summary>
         public Sensor Sensor { get; set; }
-        
+
         /// <summary>
         /// Инфиормация об источнике, откуда можно загрузить космиснимки данного спутника
         /// </summary>
-        public List<ImageSource> ImageSources { get; set; }
+        public List<ImageSource> ImageSources { get; set; } = new();
     }
 }

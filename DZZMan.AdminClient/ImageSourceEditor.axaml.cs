@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -15,6 +16,7 @@ public partial class ImageSourceEditor : Window
     public ImageSource Source { get; set; } = null;
 
     public Dictionary<string, string> Parameters { get; set; } = new();
+    public ObservableCollection<string> ParametersStrings { get; set; } = new();
 
     public ImageSourceEditor()
     {
@@ -58,7 +60,9 @@ public partial class ImageSourceEditor : Window
         NewParameterNameTB = this.Find<TextBox>("NewParameterNameTB");
         NewParameterValueTB = this.Find<TextBox>("NewParameterValueTB");
         
-        ParametersGrid = this.Find<DataGrid>("ParametersGrid");
+        ParametersListBox = this.Find<ListBox>("ParametersListBox");
+
+        ParametersListBox.Items = ParametersStrings;
     }
 
     private void Add_OnClick(object? sender, RoutedEventArgs e)
@@ -69,15 +73,20 @@ public partial class ImageSourceEditor : Window
         if (string.IsNullOrEmpty(NewParameterValueTB.Text))
             return;
         
-        Parameters.Add(NewParameterNameTB.Text, NewParameterValueTB.Text);
+        if (Parameters.TryAdd(NewParameterNameTB.Text, NewParameterValueTB.Text))
+            ParametersStrings.Add($"{NewParameterNameTB.Text} - {NewParameterValueTB.Text}");
     }
 
     private void Remove_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (ParametersGrid.SelectedIndex == -1)
+        if (ParametersListBox.SelectedIndex == -1)
             return;
 
-        Parameters.Remove(Parameters.ElementAt(ParametersGrid.SelectedIndex).Key);
+        var elementIndex = ParametersListBox.SelectedIndex; 
+        var element = Parameters.ElementAt(ParametersListBox.SelectedIndex);
+        
+        Parameters.Remove(element.Key);
+        ParametersStrings.RemoveAt(elementIndex);
     }
 
     private void OK_OnClick(object? sender, RoutedEventArgs e)

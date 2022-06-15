@@ -1,17 +1,32 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using Avalonia.Threading;
 using DZZMan.Models;
+using DZZMan.Models.ImageSources;
 using DZZMan.Models.Sensors;
+using JetBrains.Annotations;
 using MessageBox.Avalonia.Enums;
+using ReactiveUI;
 
 namespace DZZMan.AdminClient
 {
     public partial class SatEditor : Window
     {
-        public Satellite Satellite { get; set; } 
+        public Satellite Satellite { get; set; }
+        
         public bool Result { get; set; }
+
+        public ObservableCollection<ImageSource> Sources { get; set; } = new();
 
         public SatEditor()
         {
@@ -67,7 +82,11 @@ namespace DZZMan.AdminClient
             WidthTB = this.Find<TextBox>("WidthTB");
             LengthTB = this.Find<TextBox>("LengthTB");
 
+            ImageSourcesGrid = this.Find<Grid>("ImageSourcesGrid");
             ImageSourcesComboBox = this.Find<ComboBox>("ImageSourcesComboBox");
+            SourcesList = this.Find<ListBox>("SourcesList");
+
+            SourcesList.Items = Sources;
         }
 
         private void SensorType_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -172,6 +191,10 @@ namespace DZZMan.AdminClient
                 }
             }
             
+            // Выбран пункт "Нет" в списке об параметрах для источников информации
+            if (ImageSourcesComboBox.SelectedIndex == 0)
+                Sources.Clear();
+            
             Satellite = new Satellite()
             {
                 Name = NameTB.Text,
@@ -188,7 +211,8 @@ namespace DZZMan.AdminClient
                         Width = width,
                         Length = length
                     }
-                }
+                },
+                ImageSources = Sources.Count == 0 ? null : Sources.ToList()
             };
 
             Result = true;
@@ -209,12 +233,10 @@ namespace DZZMan.AdminClient
             switch (ImageSourcesComboBox?.SelectedIndex)
             {
                 case 0:
-                    SensorTypeComboBox.SelectedIndex = 0;
                     ImageSourcesGrid.IsVisible = false;
                     break;
                 
                 case 1:
-                    SensorTypeComboBox.SelectedIndex = 1;
                     ImageSourcesGrid.IsVisible = true;
                     break;
             }
@@ -222,12 +244,28 @@ namespace DZZMan.AdminClient
 
         private void AddImageSource_Click(object? sender, RoutedEventArgs e)
         {
-            
+            var sourceEditor = new ImageSourceEditor();
+            using (var source = new CancellationTokenSource())
+            {
+                sourceEditor.ShowDialog(this).ContinueWith(t => source.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
+                Dispatcher.UIThread.MainLoop(source.Token);
+            }
+            var imageSource = sourceEditor.Source;
+
+            if (imageSource is null)
+            {
+                return;
+            }
+
+            Sources.Add(imageSource);
         }
 
         private void RemoveImageSource_Click(object? sender, RoutedEventArgs e)
         {
+            if (SourcesList.SelectedIndex == -1)
+                return;
             
+            Sources.RemoveAt(SourcesList.SelectedIndex);
         }
     }
 }
