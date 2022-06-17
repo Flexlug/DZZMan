@@ -24,6 +24,7 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.14" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.14" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="Mapsui.Avalonia" Version="4.0.0-beta.4" />
     <PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
@@ -36,6 +37,15 @@
     <ProjectReference Include="..\DZZMan.Models\DZZMan.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ApiLogger">
+      <HintPath>..\..\SatImageRetriever\CopernicusApi\bin\Debug\net6.0\ApiLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="CopernicusAPI">
+      <HintPath>..\..\SatImageRetriever\CopernicusApi\bin\Debug\net6.0\CopernicusAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Downloader">
+      <HintPath>..\..\SatImageRetriever\CopernicusApi\bin\Debug\net6.0\Downloader.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
       <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.5\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>

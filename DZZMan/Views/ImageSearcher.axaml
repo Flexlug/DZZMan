@@ -1,0 +1,121 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonia="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
+        xmlns:imageSearcher="clr-namespace:DZZMan.Models.ImageSearcher"
+        x:Class="DZZMan.Views.ImageSearcher"
+        MinHeight="500" MinWidth="800"
+        Title="ImageSearcher">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" x:Name="AuthPanel" IsVisible="{Binding ShowLoginPanel}" Orientation="Vertical" Height="50" Margin="10">
+            <TextBlock Text="ТРЕБУЕТСЯ АВТОРИЗАЦИЯ ДЛЯ РАБОТЫ С СЕРВИСОМ" VerticalAlignment="Center"/>
+            <Button Content="Авторизоваться" Width="200" Margin="10" Command="{Binding Login}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+        </StackPanel>
+        
+        <Grid Grid.Row="1" Margin="10" x:Name="MainGrid" IsEnabled="{Binding MainPanelAccessible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <avalonia:MapControl Margin="5" x:Name="MapControl" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            
+            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" Text="Начальная дата: " TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <DatePicker SelectedDate="{Binding StartDate}"/>
+                        <TimePicker SelectedTime="{Binding StartTime}"/>
+                    </StackPanel>
+                </Grid>
+                
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" Text="Конечная дата: " TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <DatePicker SelectedDate="{Binding EndDate}"/>
+                        <TimePicker SelectedTime="{Binding EndTime}"/>
+                    </StackPanel>
+                </Grid>
+                
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" Text="Широта: " VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding LatitudeInput}"/>
+                </Grid>
+                
+                
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" Text="Долгота: " VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding LongitudeInput}"/>
+                </Grid>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Column="0" Content="Задать точку" Width="150" HorizontalAlignment="Center" Command="{Binding SetPoint}"/>
+                    <Button Grid.Column="1" Content="Начать поиск" Width="150" HorizontalAlignment="Center" Command="{Binding StartSearch}"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+            
+        <DataGrid Grid.Row="2" Grid.ColumnSpan="2" Margin="5" Items="{Binding ProductList}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="*" SortMemberPath="IsChecked">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="imageSearcher:ProductViewModel">
+                            <CheckBox IsChecked="{Binding Enabled}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Облачность, %" Binding="{Binding CloudCover}"/>
+                <DataGridTextColumn Header="Начало съемки" Binding="{Binding BeginPosition}"/>
+                <DataGridTextColumn Header="Конец съемки" Binding="{Binding EndPosition}"/>
+                <DataGridTextColumn Header="Размер" Binding="{Binding Size}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Cancel" Width="100" Margin="5" Command="{Binding Cancel}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
+            <Button Content="OK" Width="100" Margin="5" Command="{Binding Ok}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

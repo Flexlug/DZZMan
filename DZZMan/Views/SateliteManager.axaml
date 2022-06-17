@@ -5,6 +5,7 @@
 		xmlns:model="using:DZZMan.Models.SatelliteManager"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Width="800" Height="450"
         x:Class="DZZMan.Views.TLEManager"
         Title="TLEManager">
 	<Window.Styles>

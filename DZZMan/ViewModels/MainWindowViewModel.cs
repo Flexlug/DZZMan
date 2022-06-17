@@ -10,7 +10,9 @@ using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Rendering;
+using DynamicData;
 using DZZMan.Services;
+using Topten.RichTextKit.Editor;
 using SatelliteViewModel = DZZMan.Models.MainWindow.SatelliteViewModel;
 
 namespace DZZMan.ViewModels
@@ -23,9 +25,17 @@ namespace DZZMan.ViewModels
         /// <summary>
         /// Список подгруженных спутников
         /// </summary>
-        public ObservableCollection<SatelliteViewModel> Satellites { get; }
+        public ObservableCollection<SatelliteViewModel> Satellites { get; } = new();
 
-        public ObservableCollection<CapturedAreaViewModel> CapturedAreas { get; }
+        /// <summary>
+        /// Список просчитанных площадей съемки
+        /// </summary>
+        public ObservableCollection<CapturedAreaViewModel> CapturedAreas { get; } = new();
+
+        /// <summary>
+        /// Список текущих загрузок
+        /// </summary>
+        public ObservableCollection<DownloadItemViewModel> Downloads { get; } = new();
 
         /// <summary>
         /// Выбранный в DataGrid спутник
@@ -71,11 +81,9 @@ namespace DZZMan.ViewModels
             _map = map;
             _model = ServiceProvider.Get<MainWindowModel>();
 
-            Satellites = new();
-            CapturedAreas = new();
-
             OpenSateliteManager = ReactiveCommand.Create<Window>(async (x) => await LoadSateliteManager(x));
             OpenCapturedAreaCalc = ReactiveCommand.Create<Window>(async (x) => await LoadCapturedAreaCalc(x));
+            OpenImageSearcher = ReactiveCommand.Create<Window>(async (x) => await LoadImageSearcherAsync(x));
 
             ChangeStartDate = ReactiveCommand.Create<Window>(async (x) => await ChangeDateAsync(x, SelectedDate.Start));
             ChangeCurrentDate =
@@ -93,6 +101,11 @@ namespace DZZMan.ViewModels
         /// Открыть окно для составления запроса на расчет 
         /// </summary>
         public ReactiveCommand<Window, Unit> OpenCapturedAreaCalc { get; }
+        
+        /// <summary>
+        /// Открыть окно для поиска космических снимков
+        /// </summary>
+        public ReactiveCommand<Window, Unit> OpenImageSearcher { get; }
 
         /// <summary>
         /// Изменить дату, с которой должен начинаться рассчет трассы
@@ -211,6 +224,21 @@ namespace DZZMan.ViewModels
                 _map.Layers.Add(capturedAreaTask.Layer);
                 CapturedAreas.Add(capturedAreaTask);
             }
+        }
+
+        private async Task LoadImageSearcherAsync(Window window)
+        {   
+            var imageDownloader = new ImageSearcher(SelectedSatellite.SCN, SelectedSatellite.CurrentPoint);
+            await imageDownloader.ShowDialog(window);
+
+            if (imageDownloader.ViewModel.IsCanceled)
+                return;
+
+            var downloadItemVms = _model.GetDownloads();
+            if (downloadItemVms is null || downloadItemVms.Count == 0)
+                return;
+            
+            Downloads.AddRange(downloadItemVms);
         }
 
         public delegate void MapChanged();

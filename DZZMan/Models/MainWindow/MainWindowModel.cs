@@ -13,11 +13,13 @@ namespace DZZMan.Models.MainWindow
     {
         private ISatelliteProvider _satelliteProvider;
         private ICapturedAreaTasksProvider _capturedAreaTasksProvider;
+        private IDownloadManager _downloadManager;
         
-        public MainWindowModel(ISatelliteProvider satelliteProvider, ICapturedAreaTasksProvider capturedAreaTasksProvider)
+        public MainWindowModel(ISatelliteProvider satelliteProvider, ICapturedAreaTasksProvider capturedAreaTasksProvider, IDownloadManager downloadManager)
         {
             _satelliteProvider = satelliteProvider;
             _capturedAreaTasksProvider = capturedAreaTasksProvider;
+            _downloadManager = downloadManager;
         }
 
         public List<SatelliteViewModel> GetAvaliableSatellites()
@@ -44,6 +46,14 @@ namespace DZZMan.Models.MainWindow
             }
             
             return new CapturedAreaViewModel(task, satellite);
+        }
+
+        public List<DownloadItemViewModel> GetDownloads()
+        {
+            var downloadItems = _downloadManager.GetDownloadQueue();
+            var downloadItemVms = downloadItems.Select(x => new DownloadItemViewModel(x)).ToList();
+
+            return downloadItemVms;
         }
     }
 }

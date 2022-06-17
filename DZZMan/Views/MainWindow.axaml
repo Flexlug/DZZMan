@@ -49,7 +49,7 @@
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<MenuItem x:Name="LoadSatelites" Header="Добавить спутники" Command="{Binding OpenSateliteManager}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
 			<MenuItem x:Name="CalculateSpace" Header="Рассчитать область" Command="{Binding OpenCapturedAreaCalc}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" IsEnabled="{Binding SelectedSatelliteHasInfoInDb, Mode=OneWay}"/>
-			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки" IsEnabled="{Binding SelectedSatelliteHasImageSources, Mode=OneWay}"/>
+			<MenuItem x:Name="DownloadImages" Header="Загрузить снимки" Command="{Binding OpenImageSearcher}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" IsEnabled="{Binding SelectedSatelliteHasImageSources, Mode=OneWay}"/>
 		</Menu>
 		
 		<avalonia:MapControl x:Name="MapControl" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
@@ -123,6 +123,24 @@
 							<DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
 							<DataGridTextColumn Header="Начало съемки" Binding="{Binding AreaStartPoint}"/>
 							<DataGridTextColumn Header="Конец съемки" Binding="{Binding AreaEndPoint}"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</TabItem>
+			<TabItem Header="Загрузки" IsEnabled="{Binding SelectedSatelliteHasImageSources, Mode=OneWay}">
+				<DockPanel>
+					<DataGrid Items="{Binding Downloads}" CanUserSortColumns="True" CanUserResizeColumns="True">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+							<DataGridTextColumn Header="Статус" Binding="{Binding Status, Mode=OneWay}"/>
+							<DataGridTextColumn Header="Скорость" Binding="{Binding Speed, Mode=OneWay}"/>
+							<DataGridTemplateColumn Header="Прогресс" Width="300" SortMemberPath="IsChecked">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate DataType="mainWindow:DownloadItemViewModel">
+										<ProgressBar Minimum="0" Maximum="100" Value="{Binding Percentage}" ShowProgressText="True"/>
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
 						</DataGrid.Columns>
 					</DataGrid>
 				</DockPanel>

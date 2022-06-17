@@ -188,7 +188,7 @@ namespace DZZMan.Models.MainWindow
                 prevPoint = currentPoint;
             }
             
-            var lineList = visibleTrace.Select(x => new LineString(x.ToArray())).ToList();
+            var lineList = visibleTrace.Where(x => x.Count > 1).Select(x => new LineString(x.ToArray())).ToList();
 
             _traceFeature = lineList.ToFeatures();
         }
