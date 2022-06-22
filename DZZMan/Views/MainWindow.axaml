@@ -123,6 +123,7 @@
 							<DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
 							<DataGridTextColumn Header="Начало съемки" Binding="{Binding AreaStartPoint}"/>
 							<DataGridTextColumn Header="Конец съемки" Binding="{Binding AreaEndPoint}"/>
+							<DataGridTextColumn Header="Площадь, км^2" Binding="{Binding Area}"/>
 						</DataGrid.Columns>
 					</DataGrid>
 				</DockPanel>

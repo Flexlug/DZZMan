@@ -38,6 +38,11 @@ public class CapturedAreaViewModel : INotifyPropertyChanged
         }
     }
 
+    public double Area
+    {
+        get => Layer.Area;
+    }
+
     public bool Enabled
     {
         get => Layer.Enabled;

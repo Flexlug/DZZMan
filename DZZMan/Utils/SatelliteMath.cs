@@ -101,8 +101,10 @@ public static class SatelliteMath
         var polygonPointSequenses = new List<List<NetTopologySuite.Geometries.Coordinate>>() { new() };
         var polygonIterators = 0;
         var isSkiping = false;
+        var angleRad = 0.0d;
+        var angle = 0.0d;
         
-        for (int i = 1; i < trace.Count - 1; i++)
+        for (int i = 1; i < trace.Count; i++)
         {
             currentPointEci = trace[i];
             currentPointGeod = currentPointEci.ToGeodetic();
@@ -128,8 +130,8 @@ public static class SatelliteMath
             
             var currentPoint = SphericalMercator.FromLonLat(currentPointGeod.Longitude.Degrees, currentPointGeod.Latitude.Degrees).ToCoordinate();
 
-            var angleRad = AngleUtility.Angle(prevPoint, currentPoint);
-            var angle = AngleUtility.ToDegrees(angleRad);
+            angleRad = AngleUtility.Angle(prevPoint, currentPoint);
+            angle = AngleUtility.ToDegrees(angleRad);
             
             var cRight = GeodesyMath.DirectGeodTask(prevPoint, angle - 90, halfDist);
             var cLeft = GeodesyMath.DirectGeodTask(prevPoint, angle + 90, halfDist);
@@ -148,6 +150,13 @@ public static class SatelliteMath
             prevPoint = currentPoint;
         }
 
+        // Досчитать грань полигона для последней точки
+        // var cRightLast = GeodesyMath.DirectGeodTask(prevPoint, angle - 90, halfDist);
+        // var cLeftLast = GeodesyMath.DirectGeodTask(prevPoint, angle + 90, halfDist);
+        // var lastPointIndex = polygonPointSequenses[polygonIterators].Count - 1; 
+        // polygonPointSequenses[polygonIterators].Insert(lastPointIndex - 1, cRightLast);
+        // polygonPointSequenses[polygonIterators].Insert(lastPointIndex - 1, cLeftLast);
+        
         // Отфильтровать пустые полигоны
         polygonPointSequenses.RemoveAll(x => x.Count == 0);
         

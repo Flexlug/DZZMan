@@ -142,8 +142,8 @@ namespace DZZMan.Models.MainWindow
             _satellite = satellite;
 
             _currentPoint = DateTime.Now.ToLocalTime();
-            _traceStartPoint = _currentPoint - _satellite.Period;
-            _traceEndPoint = _currentPoint + _satellite.Period;
+            _traceStartPoint = _currentPoint - _satellite.Period / 2;
+            _traceEndPoint = _currentPoint + _satellite.Period / 2;
             
             GenerateTrace();
             GenerateCurrentPoint();

@@ -31,7 +31,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <avalonia:MapControl Margin="5" x:Name="MapControl" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            <avalonia:MapControl Margin="5" x:Name="mapControl" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5">
                 <Grid Margin="5">
@@ -95,7 +95,7 @@
             </StackPanel>
         </Grid>
             
-        <DataGrid Grid.Row="2" Grid.ColumnSpan="2" Margin="5" Items="{Binding ProductList}">
+        <DataGrid x:Name="gridd" Grid.Row="2" Grid.ColumnSpan="2" Margin="5" Items="{Binding ProductList}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="*" SortMemberPath="IsChecked">
                     <DataGridTemplateColumn.CellTemplate>

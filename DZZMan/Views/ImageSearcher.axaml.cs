@@ -11,7 +11,9 @@ using DZZMan.ViewModels;
 namespace DZZMan.Views;
 
 public partial class ImageSearcher : ReactiveWindow<ImageSearcherViewModel>
-{
+{        
+    public MapControl mapView;
+    
     public ImageSearcher(int SCN, DateTime date)
     {
         InitializeComponent();
@@ -20,16 +22,16 @@ public partial class ImageSearcher : ReactiveWindow<ImageSearcherViewModel>
 #endif
         InitializeMap();
 
-        ViewModel = new ImageSearcherViewModel(SCN, date, MapControl.Map);
+        ViewModel = new ImageSearcherViewModel(SCN, date, mapView.Map);
 
         ViewModel.OnMapChanged += () =>
         {
-            MapControl.Refresh();
+            mapView.Refresh();
         };
 
         ViewModel.OnCenterMap += (lat, lon) =>
         {
-            MapControl.Navigator.CenterOn(lon, lat);
+            mapView.Navigator.CenterOn(lon, lat);
         };
     }
     
@@ -49,14 +51,13 @@ public partial class ImageSearcher : ReactiveWindow<ImageSearcherViewModel>
         map.PanLock = false;
 
         map.Layers.Add(OpenStreetMap.CreateTileLayer());
-
-        MapControl.Map = map;
+        mapView.Map = map;
     }
 
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
 
-        MapControl = this.Find<MapControl>("MapControl");
+        mapView = this.Find<MapControl>("mapControl");
     }
 }

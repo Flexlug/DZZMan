@@ -44,6 +44,17 @@ public class CapturedAreaLayer : Layer
     }
     private DateTime _areaEndPoint;
 
+    public double Area
+    {
+        get => _area;
+        set
+        {
+            _area = value;
+            OnPropertyChanged(nameof(Area));
+        }
+    }
+    private double _area;
+
     private IEnumerable<IFeature> _footprintFeature = null;
     
     private SatelliteWrapper _satellite;
@@ -91,6 +102,13 @@ public class CapturedAreaLayer : Layer
             _task.EndDate, 
             _task.SkipDark);
 
+        // Area in km
+        var area = 0.0d;
+        foreach (var polygon in result)
+            area += polygon.Envelope.Area;
+
+        Area = area / 1000000;
+        
         _footprintFeature = result
             .Select(x => x.ToFeature())
             .ToList();

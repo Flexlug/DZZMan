@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using DZZMan.ViewModels;
 using Mapsui;
@@ -10,29 +11,38 @@ namespace DZZMan.Views
 {
     public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
+        public MapControl mapView;
+        
         public MainWindow()
         {
             InitializeComponent();
             InitializeMap();
 
-            var viewModel = new MainWindowViewModel(MapControl.Map);
+            var viewModel = new MainWindowViewModel(mapView.Map);
             DataContext = viewModel;
 
             viewModel.OnMapChanged += () =>
             {
-                MapControl.Refresh();
+                mapView.Refresh();
             };
         }
 
         private void InitializeMap()
         {
+            mapView = this.Find<MapControl>("MapControl");
+            
             var map = new Map();
             map.RotationLock = false;
             map.PanLock = false;
 
             map.Layers.Add(OpenStreetMap.CreateTileLayer());
 
-            MapControl.Map = map;
+            mapView.Map = map;
+        }
+
+        public void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }
